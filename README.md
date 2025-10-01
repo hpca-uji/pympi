@@ -88,7 +88,7 @@ However, unlike `mpi4py`, asynchronous respones will be available without needin
 For communications `net-queue` is used,
 options can be customized via the `rc` module and enviroment variables.
 
-Documentation for `net-queue` available here: _Publish pending_
+Documentation for `net-queue` available here: <https://lorca.act.uji.es/gitlab/ciber-cafe/net-queue/>
 
 Following it's memory handeling methodology, no internal buffering is currently preformed,
 so requests that typically block until a local copy is done, will block until the data is fully transmitted.
