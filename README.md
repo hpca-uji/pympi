@@ -57,9 +57,10 @@ pip install -e .
 
 #### With submodules
 ```bash
-git clone --recurse-submodules ssh://git@lorca.act.uji.es:2222/ciber-cafe/pympi.git
+git clone ssh://git@lorca.act.uji.es:2222/ciber-cafe/pympi.git
 cd pympi
-pip install -e net-queue
+git submodule update --init net-queue
+pip install -e ./net-queue
 pip install -e .
 ```
 
