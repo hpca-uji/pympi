@@ -317,3 +317,7 @@ This implementation attempts to finalizes its context specifically when the main
 If this approach is not plausible, as it is Python implementation dependant, a classic atexit handler is also registered, but as mention before, this might lead to an undefined finalization behaviour.
 
 To ensure defined gracefull finalization the only reliable method is to manually call Finalize, and ensure it is always called, even when exceptions might be unhandled and lead to thread termination.
+
+## Acknowledgments
+The library has been partially supported by:
+- Project C121/23 Convenio "CIBERseguridad post-Cuántica para el Aprendizaje FEderado en procesadores de bajo consumo y aceleradores (CIBER-CAFE)" funded by the Spanish National Cybersecurity Institute.
