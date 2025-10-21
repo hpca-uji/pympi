@@ -3,9 +3,23 @@ name = "pympi"
 version = "0.1.0"
 description = "Simple Python-based MPI implementation"
 readme = "README.md"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
 authors = [
     { name = "Miguel Ángel Prosper", email = "mprosper@uji.es" }
 ]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities"
+]
+keywords = ["MPI", "Parallel", "Python"]
+urls = { Homepage = "https://github.com/hpca-uji/pympi", Repository = "https://github.com/hpca-uji/pympi.git"}
+
 requires-python = ">=3.13"
 dependencies = [
     "bidict>=0.23.1",
