@@ -50,14 +50,14 @@ pip install pympi
 
 ### Development
 ```bash
-git clone ssh://git@lorca.act.uji.es:2222/ciber-cafe/pympi.git
+git clone https://github.com/hpca-uji/pympi.git
 cd pympi
 pip install -e .
 ```
 
 #### With submodules
 ```bash
-git clone ssh://git@lorca.act.uji.es:2222/ciber-cafe/pympi.git
+git clone https://github.com/hpca-uji/pympi.git
 cd pympi
 git submodule update --init net-queue
 pip install -e ./net-queue
@@ -89,7 +89,7 @@ However, unlike `mpi4py`, asynchronous respones will be available without needin
 For communications `net-queue` is used,
 options can be customized via the `rc` module and enviroment variables.
 
-Documentation for `net-queue` available here: <https://lorca.act.uji.es/gitlab/ciber-cafe/net-queue/>
+Documentation for `net-queue` available here: <https://github.com/hpca-uji/net-queue>
 
 Following it's memory handeling methodology, no internal buffering is currently preformed,
 so requests that typically block until a local copy is done, will block until the data is fully transmitted.
