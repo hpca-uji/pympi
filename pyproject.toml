@@ -26,3 +26,15 @@ dependencies = [
     "intbitset>=4.0.0",
     "net-queue>=0.1.0"
 ]
+
+[build-system]
+requires = [
+    "setuptools>=68.2.0"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = [
+    "pympi",
+    "pympi.*"
+]
