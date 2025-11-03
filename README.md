@@ -215,7 +215,7 @@ print(f"R{rank}: {result}")
   Environment variables checked for defaults:
   - `PYMPI_SERIAL` (comma separted list of global names)
 
-  See `nq.io_stream.Serializer(restrict)` for more information.
+  See `nq.stream.Serializer(restrict)` for more information.
 
 - `rc.proto: nq.Protocol = Protocol.TCP`
 

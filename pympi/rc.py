@@ -27,6 +27,7 @@ init = bool(
     not os.environ.get("PYMPI_ADDR")
 )
 
+
 """Wait for auto server transitions"""
 wait = float(
     os.environ.get("PYMPI_WAIT")
@@ -67,11 +68,20 @@ rank = int(
     or 0
 )
 
+
 """Serializable global names"""
 serial = list(filter(None, (
     os.environ.get("PYMPI_SERIAL")
     or ""
 ).split(",")))
+
+
+"""Serializable maximum size"""
+serial_size = int(
+    os.environ.get("PYMPI_SERIAL_SIZE")
+    or -1
+)
+
 
 """Communication protocol"""
 proto = Protocol(
@@ -93,12 +103,14 @@ ssl_key = (
     else None
 )
 
+
 """Secure communications certificate chain"""
 ssl_cert = (
     Path(key)
     if (key := os.environ.get("PYMPI_SSL_CERT"))
     else None
 )
+
 
 """Additional net-queue communicator options"""
 comm = CommunicatorOptions()

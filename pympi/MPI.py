@@ -24,7 +24,7 @@ from concurrent.futures import Future
 import net_queue as nq
 from net_queue import asynctools
 from pympi import proto, rc, util
-from net_queue.io_stream import byteview
+from net_queue.stream import byteview
 from net_queue.asynctools import thread_queue
 
 
