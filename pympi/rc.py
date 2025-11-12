@@ -27,13 +27,11 @@ init = bool(
     not os.environ.get("PYMPI_ADDR")
 )
 
-
 """Wait for auto server transitions"""
 wait = float(
     os.environ.get("PYMPI_WAIT")
     or 0.5
 )
-
 
 """Server address"""
 addr = (
@@ -41,13 +39,11 @@ addr = (
     or "127.0.0.1"
 )
 
-
 """Server port"""
 port = int(
     os.environ.get("PYMPI_PORT")
     or 61642
 )
-
 
 """Communication size"""
 size = int(
@@ -58,7 +54,6 @@ size = int(
     or 1
 )
 
-
 """Communication identifier"""
 rank = int(
     os.environ.get("PYMPI_RANK")
@@ -68,20 +63,23 @@ rank = int(
     or 0
 )
 
-
 """Serializable global names"""
 serial = list(filter(None, (
     os.environ.get("PYMPI_SERIAL")
     or ""
 ).split(",")))
 
-
-"""Serializable maximum size"""
+"""Serializable message size"""
 serial_size = int(
     os.environ.get("PYMPI_SERIAL_SIZE")
     or -1
 )
 
+"""Serializable queue size"""
+serial_queue = int(
+    os.environ.get("PYMPI_SERIAL_QUEUE")
+    or -1
+)
 
 """Communication protocol"""
 proto = Protocol(
@@ -95,7 +93,6 @@ ssl = bool(
     or False
 )
 
-
 """Secure communications private key"""
 ssl_key = (
     Path(key)
@@ -103,14 +100,12 @@ ssl_key = (
     else None
 )
 
-
 """Secure communications certificate chain"""
 ssl_cert = (
     Path(key)
     if (key := os.environ.get("PYMPI_SSL_CERT"))
     else None
 )
-
 
 """Additional net-queue communicator options"""
 comm = CommunicatorOptions()

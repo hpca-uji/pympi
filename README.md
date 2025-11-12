@@ -212,19 +212,36 @@ print(f"R{rank}: {result}")
 
   Serializable global names
 
+  If `serial` is empty, no restrictions are applied.
+
+  Internal protocol structures will be implicitly allowed.
+
   Environment variables checked for defaults:
   - `PYMPI_SERIAL` (comma separted list of global names)
 
-  See `nq.stream.PickleSerializer(restrict)` for more information.
+  See `nq.stream.Serializer(restrict)` for more information.
 
 - `rc.serial_size: int = -1`
 
-  Serializable maximum size
+  Serializable message size
 
-  If `serial_size` is `-1`, size limit is disabled.
+  If `serial_size` is negative, `serial_size` is ignored.
 
   Environment variables checked for defaults:
   - `PYMPI_SERIAL_SIZE`
+
+  See `nq.SerializationOptions(...)` for more information.
+
+- `rc.serial_queue: int = -1`
+
+  Serializable queue size
+
+  If `serial_queue` is negative, `serial_queue` is ignored.
+
+  Environment variables checked for defaults:
+  - `PYMPI_SERIAL_QUEUE`
+
+  See `nq.SerializationOptions(...)` for more information.
 
 - `rc.proto: nq.Protocol = Protocol.TCP`
 
@@ -233,12 +250,16 @@ print(f"R{rank}: {result}")
   Environment variables checked for defaults:
   - `PYMPI_PROTO`
 
+  See `nq.Protocol` for more information.
+
 - `rc.ssl: bool = False`
 
   Use secure communications
 
   Environment variables checked for defaults:
   - `PYMPI_SSL`
+
+  See `nq.SecurityOptions(...)` for more information.
 
 - `rc.ssl_key: Path | None = None`
 
@@ -247,12 +268,16 @@ print(f"R{rank}: {result}")
   Environment variables checked for defaults:
   - `PYMPI_SSL_KEY`
 
+  See `nq.SecurityOptions(...)` for more information.
+
 - `rc.ssl_cert: Path | None = None`
 
   Secure communications certificate chain
 
   Environment variables checked for defaults:
   - `PYMPI_SSL_CERT`
+
+  See `nq.SecurityOptions(...)` for more information.
 
 - `rc.comm: nq.CommunicatorOptions = nq.CommunicatorOptions()`
 
