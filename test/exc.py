@@ -7,7 +7,7 @@ __all__ = ()
 
 
 # Argument pasrser
-parser = ArgumentParser(prog="test_libs_mpi_exc", description="MPI server-client exception test")
+parser = ArgumentParser(prog="pympi-test-exc", description="PyMPI exception test")
 parser.add_argument("--rank-offset", type=int, default=45)
 
 

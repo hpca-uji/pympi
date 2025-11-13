@@ -19,7 +19,7 @@ class Mode(enum.StrEnum):
 
 
 # Argument pasrser
-parser = ArgumentParser(prog="test_comms_iops", description="MPI server-client IOPS test")
+parser = ArgumentParser(prog="pympi-test-iops", description="PyMPI IOPS test")
 parser.add_argument("mode", choices=list(Mode))
 parser.add_argument("--delay", type=float, default=0.0)
 parser.add_argument("--size", type=int, default=1_000)
