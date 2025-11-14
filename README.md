@@ -42,6 +42,49 @@ python -m pympi -np 2 python example.py
 
 Note: `mpirun`, `srun` and other job managers can also be used*
 
+## Benchmark
+
+| Configuration | Used |
+|-|-|
+| OS | Debian GNU/Linux 13 (trixie) |
+| CPU | 13th Gen Intel® Core™ i5-13400 × 16 |
+| RAM | 64 GB |
+
+| Test | Transfer | Operations | Executed |
+|-|-|-|-|
+| Sync. small | 192 MB | 4 K | PYMPI_PROTO=proto mpirun -np 2 python test/iops.py sync --size 48_000 --reps 2_000 |
+| Async. small | 192 MB | 4 K | PYMPI_PROTO=proto mpirun -np 2 python test/iops.py async --size 48_000 --reps 2_000 |
+| Sync. large | 19.2 GB | 400 | PYMPI_PROTO=proto mpirun -np 2 python test/iops.py sync --size 48_000_000 --reps 200 |
+| Async. large | 19.2 GB | 400 | PYMPI_PROTO=proto mpirun -np 2 python test/iops.py async --size 48_000_000 --reps 200 |
+
+| Times | TCP | MQTT | gRPC |
+|-|-|-|-|
+| Sync. small | 44.8 s | 90.0 s | 4.3 s |
+| Async. small | 1.9 s | 2.9 s | 1.8 s |
+| Sync. large | 17.5 s | 63.4 s | 37.8 s |
+| Async. large | 18.1 s | 54.8 s | 39.3 s |
+
+| Transfer | TCP | MQTT | gRPC |
+|-|-|-|-|
+| Sync. small | 34.29 Mbps | 17.06 Mbps | 359.11 Mbps |
+| Async. small | 821.12 Mbps | 533.90 Mbps | 833.93 Mbps |
+| Sync. large | 8770.00 Mbps | 2420.00 Mbps | 4060.00 Mbps |
+| Async. large | 8480.00 Mbps | 2800.00 Mbps | 3910.00 Mbps |
+
+| Operations | TCP | MQTT | gRPC |
+|-|-|-|-|
+| Sync. small | 89.29 IOPS | 44.42 IOPS | 935.17 IOPS |
+| Async. small | 2140.00 IOPS | 1390.00 IOPS | 2170.00 IOPS |
+| Sync. large | 22.83 IOPS | 6.31 IOPS | 10.58 IOPS |
+| Async. large | 22.1 IOPS | 7.29 IOPS | 10.19 IOPS |
+
+| Memory | TCP | MQTT | gRPC |
+|-|-|-|-|
+| Sync. small | 5.35 MB | 0.29 MB | 0.33 MB |
+| Async. small | 19.13 MB | 106.82 MB | 19.47 MB |
+| Sync. large | 72.7 MB | 78.06 MB | 68.68 MB |
+| Async. large | 6207.07 MB | 6523.14 MB | 7132.7 MB |
+
 ## Install
 ### Production
 ```bash
@@ -313,7 +356,7 @@ print(f"R{rank}: {result}")
 
   ---
 
-  - `id: uuid.UUID = uuid.uuid4()` (random)
+  - `id: uuid.UUID = uuid.uuid4()` (async)
 
 ### Classes
 - `Comm(comm_options)`
