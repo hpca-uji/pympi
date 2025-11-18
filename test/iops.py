@@ -93,7 +93,7 @@ def main(config: Namespace):
     messages = [[ary.copy() for ary in numpy.array_split(message, size)] for message in messages]
 
     comm.barrier()
-    start_time = time.time()
+    start_time = time.perf_counter()
 
     match config.mode:
         case Mode.SYNC:
@@ -106,8 +106,7 @@ def main(config: Namespace):
                 done = set(MPI.Request.Waitsome(reqs))
                 reqs = [req for i, req in enumerate(reqs) if i not in done]
 
-    end_time = time.time()
-
+    end_time = time.perf_counter()
     MPI.Finalize()
 
     print_stats(sizes=sizes, time=end_time - start_time)

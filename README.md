@@ -52,38 +52,33 @@ Note: `mpirun`, `srun` and other job managers can also be used*
 
 | Test | Transfer | Operations | Executed |
 |-|-|-|-|
-| Sync. small | 192 MB | 4 K | PYMPI_PROTO=proto mpirun -np 2 python test/iops.py sync --size 48_000 --reps 2_000 |
-| Async. small | 192 MB | 4 K | PYMPI_PROTO=proto mpirun -np 2 python test/iops.py async --size 48_000 --reps 2_000 |
-| Sync. large | 19.2 GB | 400 | PYMPI_PROTO=proto mpirun -np 2 python test/iops.py sync --size 48_000_000 --reps 200 |
-| Async. large | 19.2 GB | 400 | PYMPI_PROTO=proto mpirun -np 2 python test/iops.py async --size 48_000_000 --reps 200 |
+| Sync | 2.1GB | 500.0 | PYMPI_PROTO=proto mpirun -np 8 python test/iops.py sync --step-size 0 --max-size 21 --reps 500 |
+| Async | 2.1GB | 500.0 | PYMPI_PROTO=proto mpirun -np 8 python test/iops.py async --step-size 0 --max-size 21 --reps 500 |
+| Mix | 1.07GB | 2.05K | PYMPI_PROTO=proto mpirun -np 8 python test/iops.py async --min-size 8 --step-size 2 --step-expo 0.5 --max-size 28 |
 
-| Times | TCP | MQTT | gRPC |
+| Time | TCP | MQTT | gRPC |
 |-|-|-|-|
-| Sync. small | 44.8 s | 90.0 s | 4.3 s |
-| Async. small | 1.9 s | 2.9 s | 1.8 s |
-| Sync. large | 17.5 s | 63.4 s | 37.8 s |
-| Async. large | 18.1 s | 54.8 s | 39.3 s |
+| Sync | 12.1 s | 33.1 s | 28.1 s |
+| Async | 8.6 s | 23.7 s | 18.2 s |
+| Mix | 7.2 s | 16.6 s | 12.4 s |
 
 | Transfer | TCP | MQTT | gRPC |
 |-|-|-|-|
-| Sync. small | 34.29 Mbps | 17.06 Mbps | 359.11 Mbps |
-| Async. small | 821.12 Mbps | 533.90 Mbps | 833.93 Mbps |
-| Sync. large | 8770.00 Mbps | 2420.00 Mbps | 4060.00 Mbps |
-| Async. large | 8480.00 Mbps | 2800.00 Mbps | 3910.00 Mbps |
+| Sync | 1390.00 Mbps | 506.47 Mbps | 597.29 Mbps |
+| Async | 1940.00 Mbps | 706.75 Mbps | 923.79 Mbps |
+| Mix | 1200.00 Mbps | 517.83 Mbps | 691.85 Mbps |
 
 | Operations | TCP | MQTT | gRPC |
 |-|-|-|-|
-| Sync. small | 89.29 IOPS | 44.42 IOPS | 935.17 IOPS |
-| Async. small | 2140.00 IOPS | 1390.00 IOPS | 2170.00 IOPS |
-| Sync. large | 22.83 IOPS | 6.31 IOPS | 10.58 IOPS |
-| Async. large | 22.1 IOPS | 7.29 IOPS | 10.19 IOPS |
+| Sync | 41.46 IOPS | 15.09 IOPS | 17.8 IOPS |
+| Async | 57.91 IOPS | 21.06 IOPS | 27.53 IOPS |
+| Mix | 285.68 IOPS | 123.46 IOPS | 164.95 IOPS |
 
 | Memory | TCP | MQTT | gRPC |
 |-|-|-|-|
-| Sync. small | 5.35 MB | 0.29 MB | 0.33 MB |
-| Async. small | 19.13 MB | 106.82 MB | 19.47 MB |
-| Sync. large | 72.7 MB | 78.06 MB | 68.68 MB |
-| Async. large | 6207.07 MB | 6523.14 MB | 7132.7 MB |
+| Sync | 8.00 MB | 9.45 MB | 11.24 MB |
+| Async | 1045.10 MB | 948.68 MB | 1058.11 MB |
+| Mix | 560.32 MB | 507.15 MB | 577.45 MB |
 
 ## Install
 ### Production
