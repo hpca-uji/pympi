@@ -89,7 +89,7 @@ def main(config: Namespace):
     comm = MPI.COMM_WORLD
     size = comm.size
 
-    messages = [[ary.copy() for ary in numpy.split(message, size)] for message in messages]
+    messages = [[ary.copy() for ary in numpy.array_split(message, size)] for message in messages]
 
     comm.barrier()
     start_time = time.time()
