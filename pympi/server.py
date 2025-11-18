@@ -30,7 +30,7 @@ __all__ = (
 
 # Argument pasrser
 arg_parser = ArgumentParser(
-    prog="mpi_server",
+    prog="mpi-server",
     description="MPI server"
 )
 arg_parser.add_argument("--oneshot", action="store_true")

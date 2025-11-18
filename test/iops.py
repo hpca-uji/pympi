@@ -1,14 +1,25 @@
 """MPI server-client IOPS test"""
 
 import math
+import sys
 import time
 import enum
+import random
+from threading import Thread
 from argparse import ArgumentParser, Namespace
 
 import numpy
 
+import net_queue as nq
+
 
 __all__ = ()
+
+
+class Peer(enum.StrEnum):
+    """Peer type"""
+    SERVER = enum.auto()
+    CLIENT = enum.auto()
 
 
 class Mode(enum.StrEnum):
@@ -18,13 +29,16 @@ class Mode(enum.StrEnum):
 
 
 # Argument pasrser
-parser = ArgumentParser(prog="pympi-test-iops", description="PyMPI IOPS test")
-parser.add_argument("mode", choices=list(Mode))
-parser.add_argument("--size", type=int, default=1_000)
-parser.add_argument("--reps", type=int, default=1_000)
+parser = ArgumentParser(prog="pympi-test-iops", description="PyMPU IOPS test")
+parser.add_argument("mode", choices=list(Mode), help="Synchronization mode")
+parser.add_argument("--min-size", type=int, default=8, help="Exponenet of minimun message size")
+parser.add_argument("--step-size", type=int, default=2, help="Exponenet between message sizes")
+parser.add_argument("--max-size", type=int, default=32, help="Exponenet of maxmimun message size")
+parser.add_argument("--step-expo", type=float, default=0.5, help="Exponenet of number of splits when stepping down a size")
+parser.add_argument("--reps", type=int, default=1, help="Number of repetitions of messages")
 
 
-def convert_size(units: int, scale: int = 1000):
+def convert_size(units: float, scale: int = 1000):
     """Convert unit to use SI suffixes"""
     size_name = ("", "K", "M", "G", "T", "P", "E", "Z", "Y")
     if units > 0:
@@ -37,48 +51,65 @@ def convert_size(units: int, scale: int = 1000):
     return f"{s}{size_name[i]}"
 
 
-def print_stats(config: Namespace, time: float) -> None:
+def print_stats(sizes: list[int], time: float) -> None:
     """Print statistics"""
-    ops = config.reps * 2
-    size = config.size * ops
+    ops = len(sizes)
+    size = sum(sizes)
+    avg = size / ops
     print(f"Time:       {time:.1f}s")
-    print(f"Data:       {convert_size(config.reps)} x {convert_size(config.size)}B")
-    print(f"Transfer:   {convert_size(size)}B @ {convert_size(size * 8 / time):>5}bps")
-    print(f"Operations: {convert_size(ops)} @ {convert_size(ops / time)}IOPS")
+    print(f"Data:       {convert_size(len(sizes))} ~ {convert_size(avg)}B")
+    print(f"Transfer:   {convert_size(size)}B @ {convert_size(size * 8 / time):>5}bps")  # type: ignore
+    print(f"Operations: {convert_size(ops)} @ {convert_size(ops / time)}IOPS")  # type: ignore
+
+
+def generate(config: Namespace) -> list[numpy.ndarray]:
+    """Generate messages"""
+    messages = []
+    buffer = numpy.arange(2 ** config.max_size, dtype=numpy.uint8)
+    for i in range(config.min_size, config.max_size, config.step_size):
+        splits = round(((2 ** config.max_size) / (2 ** i)) ** config.step_expo)
+        for j in range(splits):
+            messages.append(buffer[:2 ** i])
+    messages.append(buffer)
+    messages *= config.reps
+    random.shuffle(messages)
+    return messages
 
 
 def main(config: Namespace):
     """Application entrypoint"""
     print(config)
+    random.seed(0)
 
-    message = numpy.arange(config.size, dtype=numpy.uint8)
+    messages = generate(config)
+    sizes = list(map(len, messages))
 
     from pympi import MPI
 
     comm = MPI.COMM_WORLD
     size = comm.size
 
-    messages = [ary.copy() for ary in numpy.split(message, size)]
+    messages = [[ary.copy() for ary in numpy.split(message, size)] for message in messages]
 
     comm.barrier()
     start_time = time.time()
 
     match config.mode:
         case Mode.SYNC:
-            for _ in range(config.reps):
-                comm.alltoall(messages)
+            for message in messages:
+                comm.alltoall(message)
 
         case Mode.ASYNC:
-            reqs = [comm.ialltoall(messages) for _ in range(config.reps)]
+            reqs = [comm.ialltoall(message) for message in messages]
             while reqs:
                 done = set(MPI.Request.Waitsome(reqs))
                 reqs = [req for i, req in enumerate(reqs) if i not in done]
 
     end_time = time.time()
-    del message
+
     MPI.Finalize()
 
-    print_stats(config=config, time=end_time - start_time)
+    print_stats(sizes=sizes, time=end_time - start_time)
 
 
 if __name__ == "__main__":
