@@ -54,8 +54,8 @@ def convert_size(units: float, scale: int = 1000):
 def print_stats(sizes: list[int], time: float) -> None:
     """Print statistics"""
     ops = len(sizes)
-    size = sum(sizes)
-    avg = size / ops
+    size = sum(sizes) * 2
+    avg = sum(sizes) / len(sizes)
     print(f"Time:       {time:.1f}s")
     print(f"Data:       {convert_size(len(sizes))} @ {convert_size(avg)}B")
     print(f"Transfer:   {convert_size(size)}B @ {convert_size(size * 8 / time):>5}bps")  # type: ignore
