@@ -288,7 +288,7 @@ def background_server() -> Future:
 
 def main(config: Namespace) -> None:
     """Application entrypoint"""
-    with ThreadPoolExecutor(thread_name_prefix=f"{__name__}") as pool:
+    with ThreadPoolExecutor(max_workers=rc.size, thread_name_prefix=f"{__name__}") as pool:
         with Server(pool, rc.comm) as server:
             if config.oneshot:
                 server.serve_util_finalize()
