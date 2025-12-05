@@ -4,9 +4,11 @@
 
 # TODO: P2P: self-messaging, tagging, any source
 
-# TODO: Move backgroud_server logic from communicator to module. Currently it is
+# TODO: Move background_server logic from communicator to module. Currently it is
 # here because of import restrictions, but it will be an issue when multiple
 # communicator are open.
+
+# FIXME: 1, 2 (slowest) & 3 client preformance.
 
 import copy
 import uuid
