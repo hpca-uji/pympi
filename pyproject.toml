@@ -1,6 +1,6 @@
 [project]
 name = "pympi"
-version = "0.1.0"
+version = "1.0.0"
 description = "Simple Python-based MPI implementation"
 readme = "README.md"
 license = "GPL-3.0-or-later"
