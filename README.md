@@ -257,7 +257,7 @@ print(f"R{rank}: {result}")
   Environment variables checked for defaults:
   - `PYMPI_SERIAL` (comma separted list of global names)
 
-  See `nq.stream.Serializer(restrict)` for more information.
+  See `nq.stream.PickleSerializer(restrict)` for more information.
 
 - `rc.serial_size: int = -1`
 
