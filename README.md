@@ -351,7 +351,7 @@ print(f"R{rank}: {result}")
 
   ---
 
-  - `id: uuid.UUID = uuid.uuid4()` (async)
+  - `id: uuid.UUID = uuid.uuid4()` (random)
 
 ### Classes
 - `Comm(comm_options)`
