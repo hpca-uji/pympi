@@ -1,5 +1,5 @@
 # pympi
-Python-based MPI implementation for reasearch and experimentation
+Python-based MPI implementation for research and experimentation
 
 ## Example
 ```python
@@ -106,36 +106,36 @@ pip install -e .
 Note: all the features mentioned here are planned for implementation,
 however they are not currently available.
 
-For comunicators, only `COMM_WORLD` is supported.
+For communicators, only `COMM_WORLD` is supported.
 `COMM_SELF`, `COMM_NULL`, subcommunicators and others can not be created.
 
 Buffer-based operations are limited to the ones which the send and receive buffer are equally sized.
 
-For point-to-point comuncations, only `send`, and its asynchronous and buffer-based variants, is supported.
+For point-to-point communications, only `send`, and its asynchronous and buffer-based variants, is supported.
 `ssend`, `bsend` and `rsend` can not be used. Additionally, self-messaging and message tagging are also not supported.
 
 ## Implementation
 For most cases `pympi` is a drop-in replacement for `mpi4py`,
-therefore only mayor diferences will be documented.
+therefore only mayor differences will be documented.
 
 Documentation for `mpi4py` available here: <https://mpi4py.readthedocs.io/en/stable/>
 
-However, unlike `mpi4py`, asynchronous respones will be available without needing to call `wait` on them.
+However, unlike `mpi4py`, asynchronous responses will be available without needing to call `wait` on them.
 
 ---
 
 For communications `net-queue` is used,
-options can be customized via the `rc` module and enviroment variables.
+options can be customized via the `rc` module and environment variables.
 
 Documentation for `net-queue` available here: <https://github.com/hpca-uji/net-queue>
 
-Following it's memory handeling methodology, no internal buffering is currently preformed,
+Following it's memory handling methodology, no internal buffering is currently preformed,
 so requests that typically block until a local copy is done, will block until the data is fully transmitted.
 This is only meaningfully observed on the point-to-point `send`, elsewhere this difference is negligible.
 
 ---
 
-`pympi` follows a client-server architecture, by default rank `0` lauches the server on a separed thread.
+`pympi` follows a client-server architecture, by default rank `0` launches the server on a separated thread.
 
 The server can also be started externally by:
 ```bash
@@ -147,7 +147,7 @@ Unlike traditional MPI and `mpi4py`,
 with `pympi` you can define fully personalized operations,
 not just reduce functions.
 
-For example, on this operation we group ranks with its neighbour in pairs,
+For example, on this operation we group ranks with its neighbor in pairs,
 apply a custom reduce function, and return the result to the lower rank.
 
 ```python
@@ -162,10 +162,10 @@ rank = comm.rank
 class PairReduce(proto.OperationContext):
     reducer: Callable
 
-    def group(self, size: int) -> proto.CommmunicationGroup:
+    def group(self, size: int) -> proto.CommunicationGroup:
         src = range(size)
         dst = range(0, size, 2) # half of ranks
-        return proto.CommmunicationGroup(src, dst)
+        return proto.CommunicationGroup(src, dst)
 
     def apply(self, src: Mapping[Rank, int], dst: Set[Rank]) -> Mapping[Rank, int]:
         values = [src[rank] for rank in sorted(src)]  # sort values by rank
@@ -195,7 +195,7 @@ print(f"R{rank}: {result}")
 ```
 
 ## Documentation
-### Constatns
+### Constants
 - `rc.init: bool = True`
 
   Should server auto initialize
@@ -255,7 +255,7 @@ print(f"R{rank}: {result}")
   Internal protocol structures will be implicitly allowed.
 
   Environment variables checked for defaults:
-  - `PYMPI_SERIAL` (comma separted list of global names)
+  - `PYMPI_SERIAL` (comma separated list of global names)
 
   See `nq.stream.PickleSerializer(restrict)` for more information.
 
@@ -322,7 +322,7 @@ print(f"R{rank}: {result}")
   Additional net-queue communicator options
 
 ### Structures
-- `proto.CommmunicationGroup(...)`
+- `proto.CommunicationGroup(...)`
 
   Communication group
 
@@ -333,7 +333,7 @@ print(f"R{rank}: {result}")
 
   Abstract dataclass base for operation contexts
 
-  - `group(...) -> CommmunicationGroup`
+  - `group(...) -> CommunicationGroup`
 
     Compute operation's communication group
 
@@ -345,7 +345,7 @@ print(f"R{rank}: {result}")
 
   Operation request
 
-  - `group: CommmunicationGroup`
+  - `group: CommunicationGroup`
   - `ctx: OperationContext | None = None`
   - `data: typing.Any | None = None`
 
@@ -358,7 +358,7 @@ print(f"R{rank}: {result}")
 
   Communicator
 
-  - `comm_options: nq.ComunicatorOptions = nq.ComunicatorOptions()`
+  - `comm_options: nq.CommunicatorOptions = nq.CommunicatorOptions()`
 
   ---
 
@@ -378,18 +378,18 @@ print(f"R{rank}: {result}")
   MPI server
 
   - `thread_pool: concurrent.futures.ThreadPoolExecutor`
-  - `comm_options: nq.ComunicatorOptions = nq.ComunicatorOptions()`
+  - `comm_options: nq.CommunicatorOptions = nq.CommunicatorOptions()`
 
 ## Notes
 Due to how Python and external libraries handle threading, there is no reliable way to track when the MPI context should be automatically finalized.
 
 MPI for Python finalizes its context via a atexit handler, which waits for all non-daemon threads to finish before automatically finalizing (if not disabled).
 
-This implementation attempts to finalizes its context specifically when the main thread finishs. As other threads might be internal implementation details and might be required during the finalization stage. Waiting for a atexit handler might lead to those internal threads being reaped, therefor being unable to gracefully finalize.
+This implementation attempts to finalizes its context specifically when the main thread finishes. As other threads might be internal implementation details and might be required during the finalization stage. Waiting for a atexit handler might lead to those internal threads being reaped, therefor being unable to gracefully finalize.
 
-If this approach is not plausible, as it is Python implementation dependant, a classic atexit handler is also registered, but as mention before, this might lead to an undefined finalization behaviour.
+If this approach is not plausible, as it is Python implementation dependant, a classic atexit handler is also registered, but as mention before, this might lead to an undefined finalization behavior.
 
-To ensure defined gracefull finalization the only reliable method is to manually call Finalize, and ensure it is always called, even when exceptions might be unhandled and lead to thread termination.
+To ensure defined graceful finalization the only reliable method is to manually call Finalize, and ensure it is always called, even when exceptions might be unhandled and lead to thread termination.
 
 ## Acknowledgments
 The library has been partially supported by:

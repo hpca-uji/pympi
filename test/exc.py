@@ -32,8 +32,8 @@ def main(config: Namespace):
         res = comm.allreduce(None)
     except RemoteException as exc:
         res = exc
-    print(prefix, f"error handeling {type(res)}/{ref}")
-    assert isinstance(res, ref), f"error handeling error; got {res}, expect {ref}"
+    print(prefix, f"error handling {type(res)}/{ref}")
+    assert isinstance(res, ref), f"error handling error; got {res}, expect {ref}"
 
     ref = None
     try:

@@ -39,7 +39,7 @@ arg_parser.add_argument("--oneshot", action="store_true")
 class Operation:
     """MPI Operation"""
 
-    def __init__(self, group: proto.CommmunicationGroup) -> None:
+    def __init__(self, group: proto.CommunicationGroup) -> None:
         """Initialize operation"""
         self.id = uuid.uuid4()
         self.group = group
@@ -197,7 +197,7 @@ class Server:
         peer = message.peer
         rank = self._peers.inverse[peer]
 
-        # Thread-safe client taredown
+        # Thread-safe client teardown
         with self._peers_lock:
             del self._peers[rank]
 

@@ -22,7 +22,7 @@ __all__ = (
     "Tag",
     "Rank",
     "SERIALIZABLE",
-    "CommmunicationGroup",
+    "CommunicationGroup",
     "ReduceOperation",
     "StateRequest",
     "StateResponse",
@@ -63,13 +63,13 @@ class RemoteException(RuntimeError):
 
 
 @dataclass(slots=True, frozen=True)
-class CommmunicationGroup:
+class CommunicationGroup:
     """Communication group"""
     src: frozenset[Rank]
     dst: frozenset[Rank]
 
     def __init__(self, src: coll_abc.Iterable[Rank], dst: coll_abc.Iterable[Rank]) -> None:
-        """Inizialize communication group"""
+        """Initialize communication group"""
         # NOTE: Frozen dataclasess must use object.__setattr__ during __init__
         object.__setattr__(self, "src", intbitset(src))  # type: ignore
         object.__setattr__(self, "dst", intbitset(dst))  # type: ignore
@@ -127,7 +127,7 @@ class OperationContext[T](abc.ABC):
     """Abstract dataclass base for operation contexts"""
 
     @abc.abstractmethod
-    def group(self) -> CommmunicationGroup:
+    def group(self) -> CommunicationGroup:
         """Compute operation's communication group"""
         raise NotImplementedError()
 
@@ -141,9 +141,9 @@ class OperationContext[T](abc.ABC):
 class BroadcastContext[T](OperationContext[T]):
     """Broadcast operation"""
 
-    def group(self, root: int, size: int) -> CommmunicationGroup:
+    def group(self, root: int, size: int) -> CommunicationGroup:
         """Compute operation's communication group"""
-        return CommmunicationGroup([root], range(size))
+        return CommunicationGroup([root], range(size))
 
     def apply(self, src: coll_abc.Mapping[Rank, T], dst: coll_abc.Set[Rank]) -> coll_abc.Mapping[Rank, T]:
         """Apply operation over objects"""
@@ -155,9 +155,9 @@ class BroadcastContext[T](OperationContext[T]):
 class AllGatherContext[T](OperationContext[T]):
     """All gather operation"""
 
-    def group(self, size: int) -> CommmunicationGroup:
+    def group(self, size: int) -> CommunicationGroup:
         """Compute operation's communication group"""
-        return CommmunicationGroup(range(size), range(size))
+        return CommunicationGroup(range(size), range(size))
 
     def apply(self, src: coll_abc.Mapping[Rank, T], dst: coll_abc.Set[Rank]) -> coll_abc.Mapping[Rank, coll_abc.Sequence[T]]:
         """Apply operation over objects"""
@@ -170,9 +170,9 @@ class AllReduceContext[T](OperationContext[T]):
     """All reduce operation"""
     op: ReduceOperation = ReduceOperation.SUM
 
-    def group(self, size: int) -> CommmunicationGroup:
+    def group(self, size: int) -> CommunicationGroup:
         """Compute operation's communication group"""
-        return CommmunicationGroup(range(size), range(size))
+        return CommunicationGroup(range(size), range(size))
 
     def apply(self, src: coll_abc.Mapping[Rank, T], dst: coll_abc.Set[Rank]) -> coll_abc.Mapping[Rank, T]:
         """Apply operation over objects"""
@@ -212,22 +212,22 @@ class AllReduceContext[T](OperationContext[T]):
 class AllPhasedReduceContext(AllReduceContext):
     """All phased reduce operation"""
 
-    def group(self, rank: Rank, size: int, phase: int = 0, group: int = 2) -> CommmunicationGroup:
+    def group(self, rank: Rank, size: int, phase: int = 0, group: int = 2) -> CommunicationGroup:
         """Compute operation's communication group"""
         phase_size = (group ** (phase + 1))
         start = (rank // phase_size) * phase_size
         step = (group ** (phase))
         stop = min(start + phase_size, size)
-        return CommmunicationGroup(range(start, stop, step), range(start, stop))
+        return CommunicationGroup(range(start, stop, step), range(start, stop))
 
 
 @dataclass(slots=True, frozen=True)
 class ScatterContext[T](OperationContext[T]):
     """Scatter operation"""
 
-    def group(self, root: int, size: int) -> CommmunicationGroup:
+    def group(self, root: int, size: int) -> CommunicationGroup:
         """Compute operation's communication group"""
-        return CommmunicationGroup([root], range(size))
+        return CommunicationGroup([root], range(size))
 
     def apply(self, src: coll_abc.Mapping[Rank, coll_abc.Sequence[T]], dst: coll_abc.Set[Rank]) -> coll_abc.Mapping[Rank, T]:
         """Apply operation over objects"""
@@ -239,9 +239,9 @@ class ScatterContext[T](OperationContext[T]):
 class AllToAllContext[T](OperationContext[T]):
     """All to all operation"""
 
-    def group(self, size: int) -> CommmunicationGroup:
+    def group(self, size: int) -> CommunicationGroup:
         """Compute operation's communication group"""
-        return CommmunicationGroup(range(size), range(size))
+        return CommunicationGroup(range(size), range(size))
 
     def apply(self, src: coll_abc.Mapping[Rank, coll_abc.Sequence[T]], dst: coll_abc.Set[Rank]) -> coll_abc.Mapping[Rank, coll_abc.Sequence[T]]:
         """Apply operation over objects"""
@@ -253,18 +253,18 @@ class AllToAllContext[T](OperationContext[T]):
 class GatherContext[T](AllGatherContext[T]):
     """Gather operation"""
 
-    def group(self, root: int, size: int) -> CommmunicationGroup:
+    def group(self, root: int, size: int) -> CommunicationGroup:
         """Compute operation's communication group"""
-        return CommmunicationGroup(range(size), [root])
+        return CommunicationGroup(range(size), [root])
 
 
 @dataclass(slots=True, frozen=True)
 class ReduceContext[T](AllReduceContext[T]):
     """Reduce operation"""
 
-    def group(self, root: int, size: int) -> CommmunicationGroup:
+    def group(self, root: int, size: int) -> CommunicationGroup:
         """Compute operation's communication group"""
-        return CommmunicationGroup(range(size), [root])
+        return CommunicationGroup(range(size), [root])
 
 
 @dataclass(slots=True, frozen=True)
@@ -272,9 +272,9 @@ class SendRecvContext[T](OperationContext[T]):
     """Send and receive operation"""
     tag: Tag = 0
 
-    def group(self, src: int, dst: int) -> CommmunicationGroup:
+    def group(self, src: int, dst: int) -> CommunicationGroup:
         """Compute operation's communication group"""
-        return CommmunicationGroup([src], [dst])
+        return CommunicationGroup([src], [dst])
 
     def apply(self, src: coll_abc.Mapping[Rank, T], dst: coll_abc.Set[Rank]) -> coll_abc.Mapping[Rank, T]:
         """Apply operation over objects"""
@@ -286,7 +286,7 @@ class SendRecvContext[T](OperationContext[T]):
 @dataclass(slots=True, frozen=True)
 class OperationRequest:
     """Operation request"""
-    group: CommmunicationGroup
+    group: CommunicationGroup
     ctx: OperationContext | None = None
     data: typing.Any | None = None
     id: uuid.UUID = dataclasses.field(init=False, default_factory=uuid.uuid4)

@@ -8,7 +8,7 @@
 # here because of import restrictions, but it will be an issue when multiple
 # communicator are open.
 
-# FIXME: 1, 2 (slowest) & 3 client preformance.
+# FIXME: 1, 2 (slowest) & 3 client performance.
 
 import copy
 import uuid
@@ -79,7 +79,7 @@ class Request[T]:
     """Request handler."""
 
     def __init__(self) -> None:
-        """Inizialize request"""
+        """Initialize request"""
         self._state = RequestState.INI
         self._lock = threading.Lock()
         self.future = Future[T]()
@@ -186,8 +186,8 @@ class Comm:
         """Is communicator closed"""
         return self._close_init.locked()
 
-    def _recive_response(self) -> None:
-        """Recive one response from communication"""
+    def _receive_response(self) -> None:
+        """Receive one response from communication"""
         while self._requests:
             try:
                 response = self._comm.get().data
@@ -262,7 +262,7 @@ class Comm:
 
         if self.rank in op.group.dst:
             future.add_done_callback(lambda future: future.exception() and request._resolve(future))
-            self._recv_queue.submit(self._recive_response).add_done_callback(asynctools.future_warn_exception)
+            self._recv_queue.submit(self._receive_response).add_done_callback(asynctools.future_warn_exception)
         else:
             future.add_done_callback(request._resolve)
 
@@ -280,7 +280,7 @@ class Comm:
         return comm
 
     def _new_comm(self) -> nq.Communicator:
-        """Create a new communication and inizialize it"""
+        """Create a new communication and initialize it"""
 
         # If requested, start a local server
         if rc.init:
@@ -317,7 +317,7 @@ class Comm:
         return comm
 
     def _close_comm(self, comm: nq.Communicator) -> None:
-        """Fianlize a communication object"""
+        """Finalize a communication object"""
         state = proto.RankFinalize()
         try:
             comm.put(state)
@@ -347,7 +347,7 @@ class Comm:
 
     def _close(self) -> None:
         """Communicator finalizer"""
-        # Close comunicator if initialized
+        # Close communicator if initialized
         with self._comm_lock:
             if "_comm" in self.__dict__:
                 self.barrier()
