@@ -259,25 +259,21 @@ print(f"R{rank}: {result}")
 
   See `nq.stream.PickleSerializer(restrict)` for more information.
 
-- `rc.serial_size: int = -1`
+- `rc.msg_size: int = 1 * 1024 ** 4`
 
-  Serializable message size
-
-  If `serial_size` is negative, `serial_size` is ignored.
+  Maximum message size
 
   Environment variables checked for defaults:
-  - `PYMPI_SERIAL_SIZE`
+  - `PYMPI_MSG_SIZE`
 
   See `nq.SerializationOptions(...)` for more information.
 
-- `rc.serial_queue: int = -1`
+- `rc.queue_size: int = 1 * 1024 ** 3`
 
-  Serializable queue size
-
-  If `serial_queue` is negative, `serial_queue` is ignored.
+  Maximum queue size
 
   Environment variables checked for defaults:
-  - `PYMPI_SERIAL_QUEUE`
+  - `PYMPI_QUEUE_SIZE`
 
   See `nq.SerializationOptions(...)` for more information.
 

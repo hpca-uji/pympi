@@ -69,16 +69,16 @@ serial = list(filter(None, (
     or ""
 ).split(",")))
 
-"""Serializable message size"""
-serial_size = int(
-    os.environ.get("PYMPI_SERIAL_SIZE")
-    or -1
+"""Maximum message size"""
+msg_size = int(
+    os.environ.get("PYMPI_MSG_SIZE")
+    or 1 * 1024 ** 4
 )
 
-"""Serializable queue size"""
-serial_queue = int(
-    os.environ.get("PYMPI_SERIAL_QUEUE")
-    or -1
+"""Maximum queue size"""
+queue_size = int(
+    os.environ.get("PYMPI_QUEUE_SIZE")
+    or 1 * 1024 ** 3
 )
 
 """Communication protocol"""
