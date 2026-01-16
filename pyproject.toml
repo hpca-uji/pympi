@@ -24,7 +24,7 @@ requires-python = ">=3.13"
 dependencies = [
     "bidict>=0.23.1",
     "intbitset>=4.0.0",
-    "net-queue>=0.1.0"
+    "net-queue>=1.1.0"
 ]
 
 [project.optional-dependencies]
