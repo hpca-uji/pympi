@@ -1,8 +1,8 @@
 import copy
 
 import net_queue as nq
-from net_queue import CommunicatorOptions
-from net_queue.stream import PickleSerializer
+from net_queue.core.comm import CommunicatorOptions
+from net_queue.utils.streamtools import PickleSerializer
 from pympi import proto, rc
 
 

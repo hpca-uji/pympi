@@ -10,7 +10,7 @@ from argparse import ArgumentParser, Namespace
 
 import numpy
 
-import net_queue as nq
+import net_queue.core.comm as nq
 
 
 __all__ = ()

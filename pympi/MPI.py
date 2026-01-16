@@ -24,10 +24,11 @@ from concurrent import futures
 from concurrent.futures import Future
 
 import net_queue as nq
-from net_queue import asynctools
-from pympi import proto, rc, util
-from net_queue.stream import byteview
-from net_queue.asynctools import thread_queue
+from net_queue.utils import asynctools
+from net_queue.utils.stream import byteview
+from net_queue.utils.asynctools import thread_queue
+
+from pympi import proto, rc, utils
 
 
 __all__ = (
@@ -167,7 +168,7 @@ class Comm:
 
     def __init__(self, comm_options: nq.CommunicatorOptions = nq.CommunicatorOptions()) -> None:
         """Communicator initialization"""
-        self._comm_options = copy.replace(util.comm_options(comm_options))
+        self._comm_options = copy.replace(utils.comm_options(comm_options))
 
         self._comm_lock = threading.Lock()
 

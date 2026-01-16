@@ -16,10 +16,11 @@ from argparse import ArgumentParser, Namespace
 from concurrent.futures import ThreadPoolExecutor
 
 from bidict import bidict
-
 import net_queue as nq
-from net_queue import asynctools
-from pympi import proto, rc, util
+from net_queue.core import Message
+from net_queue.utils import asynctools
+
+from pympi import proto, rc, utils
 
 
 __all__ = (
@@ -82,7 +83,7 @@ class Server:
     def __init__(self, thread_pool: ThreadPoolExecutor, comm_options: nq.CommunicatorOptions = nq.CommunicatorOptions()) -> None:
         """Server initialization"""
         super().__init__()
-        self._comm_options = copy.replace(util.comm_options(comm_options), workers=rc.size)
+        self._comm_options = copy.replace(utils.comm_options(comm_options), workers=rc.size)
 
         # State
         self._shutdown = False
@@ -164,7 +165,7 @@ class Server:
             if self._size == 0:
                 break
 
-    def _handle_state_request(self, message: nq.Message[proto.StateRequest]) -> None:
+    def _handle_state_request(self, message: Message[proto.StateRequest]) -> None:
         """Handle an state request"""
         request = message.data
 
@@ -177,7 +178,7 @@ class Server:
                 warnings.warn(f"Unknown state type {request}", RuntimeWarning)
                 return
 
-    def _handle_init(self, message: nq.Message[proto.RankInit]) -> None:
+    def _handle_init(self, message: Message[proto.RankInit]) -> None:
         """Initialize."""
         # Request context
         peer = message.peer
@@ -191,7 +192,7 @@ class Server:
         # Inform clients of state change
         self._comm.put(proto.StateResponse(size=self._size))
 
-    def _handle_finalize(self, message: nq.Message[proto.RankFinalize]) -> None:
+    def _handle_finalize(self, message: Message[proto.RankFinalize]) -> None:
         """Terminate."""
         # Request context
         peer = message.peer
@@ -204,7 +205,7 @@ class Server:
         # Inform clients of state change
         self._comm.put(proto.StateResponse(size=self._size))
 
-    def _handle_operation_request(self, message: nq.Message[proto.OperationRequest]) -> None:
+    def _handle_operation_request(self, message: Message[proto.OperationRequest]) -> None:
         """Handle an operation request"""
         # Operation context
         peer = message.peer
@@ -274,7 +275,7 @@ class Server:
 
 def background_server() -> Future:
     """Start a background server"""
-    from net_queue.asynctools import thread_func
+    from net_queue.utils.asynctools import thread_func
 
     def serve_oneshot():
         with ThreadPoolExecutor(thread_name_prefix=f"{__name__}") as pool:
