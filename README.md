@@ -46,6 +46,7 @@ Note: `mpirun`, `srun` and other job managers can also be used*
 
 | Configuration | Used |
 |-|-|
+| SW | Python 3.13.5 |
 | OS | Debian GNU/Linux 13 (trixie) |
 | CPU | 13th Gen Intel® Core™ i5-13400 × 16 |
 | RAM | 64 GB |
