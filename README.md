@@ -121,8 +121,6 @@ therefore only mayor differences will be documented.
 
 Documentation for `mpi4py` available here: <https://mpi4py.readthedocs.io/en/stable/>
 
-However, unlike `mpi4py`, asynchronous responses will be available without needing to call `wait` on them.
-
 ---
 
 For communications `net-queue` is used,
@@ -130,13 +128,19 @@ options can be customized via the `rc` module and environment variables.
 
 Documentation for `net-queue` available here: <https://github.com/hpca-uji/net-queue>
 
-Following it's memory handling methodology, no internal buffering is currently preformed,
-so requests that typically block until a local copy is done, will block until the data is fully transmitted.
-This is only meaningfully observed on the point-to-point `send`, elsewhere this difference is negligible.
-
 ---
 
-`pympi` follows a client-server architecture, by default rank `0` launches the server on a separated thread.
+`pympi` does not feature a manual progress engine, so operations are always processed in the background via threads.
+
+Also, it only features the `MPI_THREAD_MULTIPLE` threading level, so all operations are thread-safe,
+but it can not be switch to other threading levels for different performance characteristics.
+
+Following `net-queue` memory handling methodology, no internal buffering is currently preformed,
+so requests that typically block until a local copy is done, will block until the data is fully transmitted.
+This is only meaningfully observed on the blocking point-to-point `send`, elsewhere this difference is negligible.
+
+Using `net-queue` also means `pympi` follows a client-server architecture,
+by default rank `0` launches the server on a separated thread.
 
 The server can also be started externally by:
 ```bash
