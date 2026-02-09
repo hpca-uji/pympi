@@ -1,16 +1,12 @@
 """MPI server-client IOPS test"""
 
 import math
-import sys
 import time
 import enum
 import random
-from threading import Thread
 from argparse import ArgumentParser, Namespace
 
 import numpy
-
-import net_queue.core.comm as nq
 
 
 __all__ = ()

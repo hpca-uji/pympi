@@ -295,7 +295,7 @@ class Comm:
 
         state = proto.RankInit(rank=self.rank)
         try:
-            comm = nq.new(protocol=rc.proto, purpose=nq.Purpose.CLIENT, options=self._comm_options)
+            comm = nq.new(backend=rc.proto, purpose=nq.Purpose.CLIENT, options=self._comm_options)
             comm.put(state)
             while True:
                 response = comm.get().data

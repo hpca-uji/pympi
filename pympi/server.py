@@ -117,7 +117,7 @@ class Server:
             if comm := self.__dict__.get("_comm"):
                 pass
             else:
-                comm = self.__dict__["_comm"] = nq.new(protocol=rc.proto, purpose=nq.Purpose.SERVER, options=self._comm_options)
+                comm = self.__dict__["_comm"] = nq.new(backend=rc.proto, purpose=nq.Purpose.SERVER, options=self._comm_options)
         return comm
 
     def __enter__(self):

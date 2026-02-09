@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 
-from net_queue import Protocol, CommunicatorOptions
+from net_queue import Backend, CommunicatorOptions
 
 
 __all__ = (
@@ -81,10 +81,10 @@ queue_size = int(
     or 1 * 1024 ** 3
 )
 
-"""Communication protocol"""
-proto = Protocol(
-    os.environ.get("PYMPI_PROTO")
-    or "tcp"
+"""Communication backend"""
+proto = Backend(
+    os.environ.get("PYMPI_COMM")
+    or "socket_tcp"
 )
 
 """Use secure communications"""

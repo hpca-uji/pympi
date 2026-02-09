@@ -284,12 +284,12 @@ print(f"R{rank}: {result}")
 
 - `rc.proto: nq.Protocol = Protocol.TCP`
 
-  Communication protocol
+  Communication backend
 
   Environment variables checked for defaults:
-  - `PYMPI_PROTO`
+  - `PYMPI_COMM`
 
-  See `nq.Protocol` for more information.
+  See `nq.Backend` for more information.
 
 - `rc.ssl: bool = False`
 
