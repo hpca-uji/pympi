@@ -80,7 +80,7 @@ class Operation:
 class Server:
     """MPI server"""
 
-    def __init__(self, thread_pool: ThreadPoolExecutor, comm_options: nq.CommunicatorOptions = nq.CommunicatorOptions()) -> None:
+    def __init__(self, thread_pool: ThreadPoolExecutor, comm_options: nq.CommunicatorOptions = rc.opts) -> None:
         """Server initialization"""
         super().__init__()
         self._comm_options = copy.replace(utils.comm_options(comm_options), workers=rc.size)
@@ -117,7 +117,7 @@ class Server:
             if comm := self.__dict__.get("_comm"):
                 pass
             else:
-                comm = self.__dict__["_comm"] = nq.new(backend=rc.proto, purpose=nq.Purpose.SERVER, options=self._comm_options)
+                comm = self.__dict__["_comm"] = nq.new(backend=rc.comm, purpose=nq.Purpose.SERVER, options=self._comm_options)
         return comm
 
     def __enter__(self):
@@ -290,7 +290,7 @@ def background_server() -> Future:
 def main(config: Namespace) -> None:
     """Application entrypoint"""
     with ThreadPoolExecutor(max_workers=rc.size, thread_name_prefix=f"{__name__}") as pool:
-        with Server(pool, rc.comm) as server:
+        with Server(pool) as server:
             if config.oneshot:
                 server.serve_util_finalize()
             else:

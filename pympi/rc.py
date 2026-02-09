@@ -14,11 +14,11 @@ __all__ = (
     "size",
     "rank",
     "serial",
-    "proto",
+    "comm",
     "ssl",
     "ssl_key",
     "ssl_cert",
-    "comm"
+    "opts"
 )
 
 
@@ -82,7 +82,7 @@ queue_size = int(
 )
 
 """Communication backend"""
-proto = Backend(
+comm = Backend(
     os.environ.get("PYMPI_COMM")
     or "socket_tcp"
 )
@@ -108,4 +108,4 @@ ssl_cert = (
 )
 
 """Additional net-queue communicator options"""
-comm = CommunicatorOptions()
+opts = CommunicatorOptions()

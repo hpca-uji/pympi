@@ -166,7 +166,7 @@ class Request[T]:
 class Comm:
     """Communicator."""
 
-    def __init__(self, comm_options: nq.CommunicatorOptions = nq.CommunicatorOptions()) -> None:
+    def __init__(self, comm_options: nq.CommunicatorOptions = rc.opts) -> None:
         """Communicator initialization"""
         self._comm_options = copy.replace(utils.comm_options(comm_options))
 
@@ -295,7 +295,7 @@ class Comm:
 
         state = proto.RankInit(rank=self.rank)
         try:
-            comm = nq.new(backend=rc.proto, purpose=nq.Purpose.CLIENT, options=self._comm_options)
+            comm = nq.new(backend=rc.comm, purpose=nq.Purpose.CLIENT, options=self._comm_options)
             comm.put(state)
             while True:
                 response = comm.get().data
@@ -672,7 +672,7 @@ BXOR = proto.ReduceOperation.BXOR
 MINLOC = proto.ReduceOperation.MINLOC
 MAXLOC = proto.ReduceOperation.MAXLOC
 
-COMM_WORLD = Comm(rc.comm)
+COMM_WORLD = Comm()
 
 # Best effort finalizer
 try:

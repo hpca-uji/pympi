@@ -282,7 +282,7 @@ print(f"R{rank}: {result}")
 
   See `nq.SerializationOptions(...)` for more information.
 
-- `rc.proto: nq.Protocol = Protocol.TCP`
+- `rc.comm: nq.Backend = Backend.SOCKET_TCP`
 
   Communication backend
 
@@ -318,7 +318,7 @@ print(f"R{rank}: {result}")
 
   See `nq.SecurityOptions(...)` for more information.
 
-- `rc.comm: nq.CommunicatorOptions = nq.CommunicatorOptions()`
+- `rc.opts: nq.CommunicatorOptions = nq.CommunicatorOptions()`
 
   Additional net-queue communicator options
 
