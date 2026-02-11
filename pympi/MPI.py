@@ -166,9 +166,9 @@ class Request[T]:
 class Comm:
     """Communicator."""
 
-    def __init__(self, comm_options: nq.CommunicatorOptions = rc.opts) -> None:
+    def __init__(self, comm_opts: nq.CommunicatorOptions = rc.comm_opts) -> None:
         """Communicator initialization"""
-        self._comm_options = copy.replace(utils.comm_options(comm_options))
+        self._comm_opts = copy.replace(utils.comm_options(comm_opts))
 
         self._comm_lock = threading.Lock()
 
@@ -286,16 +286,16 @@ class Comm:
         # If requested, start a local server
         if rc.init:
             if self.rank == 0:
-                from pympi.server import background_server
-                self._server = background_server()
-
-            # Allow some time for server startup
-            from time import sleep
-            sleep(rc.wait)
+                from pympi.server import start_server
+                self._server = start_server()
+            else:
+                # Allow some time for server startup
+                from time import sleep
+                sleep(rc.wait)
 
         state = proto.RankInit(rank=self.rank)
         try:
-            comm = nq.new(backend=rc.comm, purpose=nq.Purpose.CLIENT, options=self._comm_options)
+            comm = nq.new(protocol=rc.proto, purpose=nq.Purpose.CLIENT, options=self._comm_opts)
             comm.put(state)
             while True:
                 response = comm.get().data
@@ -341,10 +341,10 @@ class Comm:
         if rc.init:
             if self.rank == 0:
                 self._server.result()
-
-            # Allow some time for server shutdown
-            from time import sleep
-            sleep(rc.wait)
+            else:
+                # Allow some time for server shutdown
+                from time import sleep
+                sleep(rc.wait)
 
     def _close(self) -> None:
         """Communicator finalizer"""

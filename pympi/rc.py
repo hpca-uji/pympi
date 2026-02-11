@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 
-from net_queue import Backend, CommunicatorOptions
+from net_queue import Protocol, CommunicatorOptions
 
 
 __all__ = (
@@ -14,11 +14,11 @@ __all__ = (
     "size",
     "rank",
     "serial",
-    "comm",
+    "proto",
     "ssl",
     "ssl_key",
     "ssl_cert",
-    "opts"
+    "comm_opts"
 )
 
 
@@ -82,9 +82,9 @@ queue_size = int(
 )
 
 """Communication backend"""
-comm = Backend(
-    os.environ.get("PYMPI_COMM")
-    or "socket_tcp"
+proto = Protocol(
+    os.environ.get("PYMPI_PROTO")
+    or "tcp"
 )
 
 """Use secure communications"""
@@ -108,4 +108,4 @@ ssl_cert = (
 )
 
 """Additional net-queue communicator options"""
-opts = CommunicatorOptions()
+comm_opts = CommunicatorOptions()

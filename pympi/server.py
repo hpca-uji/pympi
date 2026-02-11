@@ -25,7 +25,7 @@ from pympi import proto, rc, utils
 
 __all__ = (
     "Server",
-    "background_server"
+    "start_server"
 )
 
 
@@ -34,7 +34,6 @@ arg_parser = ArgumentParser(
     prog="mpi-server",
     description="MPI server"
 )
-arg_parser.add_argument("--oneshot", action="store_true")
 
 
 class Operation:
@@ -80,10 +79,10 @@ class Operation:
 class Server:
     """MPI server"""
 
-    def __init__(self, thread_pool: ThreadPoolExecutor, comm_options: nq.CommunicatorOptions = rc.opts) -> None:
+    def __init__(self, thread_pool: ThreadPoolExecutor, comm_opts: nq.CommunicatorOptions = rc.comm_opts) -> None:
         """Server initialization"""
         super().__init__()
-        self._comm_options = copy.replace(utils.comm_options(comm_options), workers=rc.size)
+        self._comm_opts = copy.replace(utils.comm_options(comm_opts), workers=rc.size)
 
         # State
         self._shutdown = False
@@ -117,7 +116,7 @@ class Server:
             if comm := self.__dict__.get("_comm"):
                 pass
             else:
-                comm = self.__dict__["_comm"] = nq.new(backend=rc.comm, purpose=nq.Purpose.SERVER, options=self._comm_options)
+                comm = self.__dict__["_comm"] = nq.new(protocol=rc.proto, purpose=nq.Purpose.SERVER, options=self._comm_opts)
         return comm
 
     def __enter__(self):
@@ -273,28 +272,24 @@ class Server:
         self._close_done.wait()
 
 
-def background_server() -> Future:
+def run_server():
+    """Run a server"""
+    with ThreadPoolExecutor(max_workers=rc.size, thread_name_prefix=f"{__name__}") as pool:
+        with Server(pool) as server:
+            server.serve_util_finalize()
+
+
+def start_server() -> Future:
     """Start a background server"""
     from net_queue.utils.asynctools import thread_func
-
-    def serve_oneshot():
-        with ThreadPoolExecutor(thread_name_prefix=f"{__name__}") as pool:
-            with Server(pool) as server:
-                server.serve_util_finalize()
-
-    future = thread_func(serve_oneshot)
+    future = thread_func(run_server)
     future.add_done_callback(asynctools.future_warn_exception)
     return future
 
 
 def main(config: Namespace) -> None:
     """Application entrypoint"""
-    with ThreadPoolExecutor(max_workers=rc.size, thread_name_prefix=f"{__name__}") as pool:
-        with Server(pool) as server:
-            if config.oneshot:
-                server.serve_util_finalize()
-            else:
-                server.serve_forever()
+    run_server()
 
 
 if __name__ == "__main__":

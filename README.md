@@ -262,7 +262,7 @@ print(f"R{rank}: {result}")
   Environment variables checked for defaults:
   - `PYMPI_SERIAL` (comma separated list of global names)
 
-  See `nq.stream.PickleSerializer(restrict)` for more information.
+  See `nq.streamtools.PickleSerializer(restrict)` for more information.
 
 - `rc.msg_size: int = 1 * 1024 ** 4`
 
@@ -282,14 +282,14 @@ print(f"R{rank}: {result}")
 
   See `nq.SerializationOptions(...)` for more information.
 
-- `rc.comm: nq.Backend = Backend.SOCKET_TCP`
+- `rc.comm: nq.Protocol = nq.Protocol.TCP`
 
-  Communication backend
+  Communication protocol
 
   Environment variables checked for defaults:
-  - `PYMPI_COMM`
+  - `PYMPI_PROTO`
 
-  See `nq.Backend` for more information.
+  See `nq.Protocol` for more information.
 
 - `rc.ssl: bool = False`
 
