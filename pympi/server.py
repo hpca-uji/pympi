@@ -274,8 +274,9 @@ class Server:
 
 def run_server():
     """Run a server"""
+    comm_opts = copy.replace(rc.comm_opts, id=uuid.uuid4())
     with ThreadPoolExecutor(max_workers=rc.size, thread_name_prefix=f"{__name__}") as pool:
-        with Server(pool) as server:
+        with Server(pool, comm_opts) as server:
             server.serve_util_finalize()
 
 

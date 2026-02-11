@@ -288,10 +288,10 @@ class Comm:
             if self.rank == 0:
                 from pympi.server import start_server
                 self._server = start_server()
-            else:
-                # Allow some time for server startup
-                from time import sleep
-                sleep(rc.wait)
+
+            # Allow some time for server startup
+            from time import sleep
+            sleep(rc.wait)
 
         state = proto.RankInit(rank=self.rank)
         try:
@@ -341,10 +341,10 @@ class Comm:
         if rc.init:
             if self.rank == 0:
                 self._server.result()
-            else:
-                # Allow some time for server shutdown
-                from time import sleep
-                sleep(rc.wait)
+
+            # Allow some time for server shutdown
+            from time import sleep
+            sleep(rc.wait)
 
     def _close(self) -> None:
         """Communicator finalizer"""
