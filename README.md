@@ -53,9 +53,9 @@ Note: `mpirun`, `srun` and other job managers can also be used*
 
 | Test | Transfer | Operations | Executed |
 |-|-|-|-|
-| Sync | 2.1GB | 500.0 | PYMPI_PROTO=proto mpirun -np 8 python test/iops.py sync --step-size 0 --max-size 21 --reps 500 |
-| Async | 2.1GB | 500.0 | PYMPI_PROTO=proto mpirun -np 8 python test/iops.py async --step-size 0 --max-size 21 --reps 500 |
-| Mix | 1.07GB | 2.05K | PYMPI_PROTO=proto mpirun -np 8 python test/iops.py async --min-size 8 --step-size 2 --step-expo 0.5 --max-size 28 |
+| Sync | 2.1GB | 500.0 | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py sync --step-size 0 --max-size 21 --reps 500 |
+| Async | 2.1GB | 500.0 | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py async --step-size 0 --max-size 21 --reps 500 |
+| Mix | 1.07GB | 2.05K | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py async --min-size 8 --step-size 2 --step-expo 0.5 --max-size 28 |
 
 | Time | TCP | MQTT | gRPC |
 |-|-|-|-|
