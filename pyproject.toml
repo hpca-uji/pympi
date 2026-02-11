@@ -1,6 +1,6 @@
 [project]
 name = "pympi"
-version = "1.1.0"
+version = "1.2.0"
 description = "Simple Python-based MPI implementation"
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -24,7 +24,7 @@ requires-python = ">=3.13"
 dependencies = [
     "bidict>=0.23.1",
     "intbitset>=4.0.0",
-    "net-queue>=2.0.0"
+    "net-queue>=2.1.0"
 ]
 
 [project.optional-dependencies]
