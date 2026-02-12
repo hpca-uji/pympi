@@ -174,8 +174,8 @@ class PairReduce(proto.OperationContext):
 
     def apply(self, src: Mapping[Rank, int], dst: Set[Rank]) -> Mapping[Rank, int]:
         values = [src[rank] for rank in sorted(src)]  # sort values by rank
-        values = map(self.reducer, itertools.batched(values, 2))
-        return dict(zip(dst, values))
+        result = map(self.reducer, itertools.batched(values, 2))
+        return dict(zip(dst, result))
 
 # Inputs
 value = rank
@@ -188,8 +188,9 @@ print(f"R{rank}: {value}")
 # Execute operation
 context = PairReduce(reducer=sum)
 group = context.group(size=comm.size)
-request = proto.OperationRequest(group, context, value)
-result = comm.submit(request).wait()
+operation = proto.OperationRequest(group, context, value)
+request = comm.submit(operation)
+result = request.wait()
 
 # Outputs
 print(f"R{rank}: {result}")
