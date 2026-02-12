@@ -318,7 +318,7 @@ print(f"R{rank}: {result}")
 
   See `nq.SecurityOptions(...)` for more information.
 
-- `rc.opts: nq.CommunicatorOptions = nq.CommunicatorOptions()`
+- `rc.comm_opts: nq.CommunicatorOptions = nq.CommunicatorOptions()`
 
   Additional net-queue communicator options
 
@@ -355,11 +355,11 @@ print(f"R{rank}: {result}")
   - `id: uuid.UUID = uuid.uuid4()` (random)
 
 ### Classes
-- `Comm(comm_options)`
+- `Comm(comm_opts)`
 
   Communicator
 
-  - `comm_options: nq.CommunicatorOptions = nq.CommunicatorOptions()`
+  - `comm_opts: nq.CommunicatorOptions = nq.CommunicatorOptions()`
 
   ---
 
@@ -374,12 +374,12 @@ print(f"R{rank}: {result}")
 
       Called with the result of the operation prior to resolving the request, the return value of this function is the one provided to `wait`.
 
-- `server.Server(thread_pool, comm_options)`
+- `server.Server(thread_pool, comm_opts)`
 
   MPI server
 
   - `thread_pool: concurrent.futures.ThreadPoolExecutor`
-  - `comm_options: nq.CommunicatorOptions = nq.CommunicatorOptions()`
+  - `comm_opts: nq.CommunicatorOptions = nq.CommunicatorOptions()`
 
 ## Notes
 Due to how Python and external libraries handle threading, there is no reliable way to track when the MPI context should be automatically finalized.
