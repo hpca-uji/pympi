@@ -25,9 +25,9 @@ match rank:
         comm.recv(source=1)
 
 # Nonblocking
-req = comm.ireduce(rank)
+request = comm.ireduce(rank)
 
-result = req.wait()
+result = request.wait()
 
 # Buffer-based
 buffer = bytearray(10)
