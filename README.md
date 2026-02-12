@@ -186,10 +186,10 @@ print(f"R{rank}: {value}")
 # R3: 3
 
 # Execute operation
-ctx = PairReduce(reducer=sum)
-group = ctx.group(size=comm.size)
-op = proto.OperationRequest(group, ctx, value)
-result = comm.submit(op).wait()
+context = PairReduce(reducer=sum)
+group = context.group(size=comm.size)
+request = proto.OperationRequest(group, context, value)
+result = comm.submit(request).wait()
 
 # Outputs
 print(f"R{rank}: {result}")
