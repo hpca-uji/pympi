@@ -113,7 +113,7 @@ For communicators, only `COMM_WORLD` is supported.
 Buffer-based operations are limited to the ones which the send and receive buffer are equally sized.
 
 For point-to-point communications, only `send`, and its asynchronous and buffer-based variants, is supported.
-`ssend`, `bsend` and `rsend` can not be used. Additionally, self-messaging and message tagging are also not supported.
+`ssend`, `bsend` and `rsend` can not be used. Additionally, self-messaging, message tagging and `ANY_SOURCE` are also not supported.
 
 ## Implementation
 For most cases `pympi` is a drop-in replacement for `mpi4py`,
