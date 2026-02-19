@@ -24,17 +24,7 @@ class Mode(enum.StrEnum):
     ASYNC = enum.auto()
 
 
-# Argument pasrser
-parser = ArgumentParser(prog="pympi-test-iops", description="PyMPU IOPS test")
-parser.add_argument("mode", choices=list(Mode), help="Synchronization mode")
-parser.add_argument("--min-size", type=int, default=8, help="Exponenet of minimun message size")
-parser.add_argument("--step-size", type=int, default=2, help="Exponenet between message sizes")
-parser.add_argument("--max-size", type=int, default=32, help="Exponenet of maxmimun message size")
-parser.add_argument("--step-expo", type=float, default=0.5, help="Exponenet of number of splits when stepping down a size")
-parser.add_argument("--reps", type=int, default=1, help="Number of repetitions of messages")
-
-
-def convert_size(units: float, scale: int = 1000):
+def convert_size(units: float, scale: int = 1000) -> str:
     """Convert unit to use SI suffixes"""
     size_name = ("", "K", "M", "G", "T", "P", "E", "Z", "Y")
     if units > 0:
@@ -73,7 +63,7 @@ def generate(config: Namespace) -> list[numpy.ndarray]:
     return messages
 
 
-def main(config: Namespace):
+def main(config: Namespace) -> None:
     """Application entrypoint"""
     print(config)
     random.seed(0)
@@ -109,4 +99,11 @@ def main(config: Namespace):
 
 
 if __name__ == "__main__":
+    parser = ArgumentParser(prog="pympi-test-iops", description="PyMPU IOPS test")
+    parser.add_argument("mode", choices=list(Mode), help="Synchronization mode")
+    parser.add_argument("--min-size", type=int, default=8, help="Exponenet of minimun message size")
+    parser.add_argument("--step-size", type=int, default=2, help="Exponenet between message sizes")
+    parser.add_argument("--max-size", type=int, default=32, help="Exponenet of maxmimun message size")
+    parser.add_argument("--step-expo", type=float, default=0.5, help="Exponenet of number of splits when stepping down a size")
+    parser.add_argument("--reps", type=int, default=1, help="Number of repetitions of messages")
     main(parser.parse_args())

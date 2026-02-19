@@ -6,12 +6,7 @@ from argparse import ArgumentParser, Namespace
 __all__ = ()
 
 
-# Argument pasrser
-parser = ArgumentParser(prog="pympi-test-api", description="PyMPI API test")
-parser.add_argument("--rank-offset", type=int, default=45)
-
-
-def main(config: Namespace):
+def main(config: Namespace) -> None:
     """Application entrypoint"""
     from pympi import MPI
 
@@ -91,4 +86,6 @@ def main(config: Namespace):
 
 
 if __name__ == "__main__":
+    parser = ArgumentParser(prog="pympi-test-api", description="PyMPI API test")
+    parser.add_argument("--rank-offset", type=int, default=45)
     main(parser.parse_args())
