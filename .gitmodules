@@ -1,3 +1,0 @@
-[submodule "net-queue"]
-	path = net-queue
-	url = https://github.com/hpca-uji/net-queue.git
