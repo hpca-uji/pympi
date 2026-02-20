@@ -94,15 +94,6 @@ cd pympi
 pip install -e .
 ```
 
-#### With submodules
-```bash
-git clone https://github.com/hpca-uji/pympi.git
-cd pympi
-git submodule update --init net-queue
-pip install -e ./net-queue
-pip install -e .
-```
-
 ## Limitations
 Note: all the features mentioned here are planned for implementation,
 however they are not currently available.
