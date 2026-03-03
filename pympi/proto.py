@@ -12,8 +12,8 @@ import operator
 import functools
 import dataclasses
 from dataclasses import dataclass
+from traceback import format_exception
 from collections import abc as coll_abc
-from traceback import TracebackException
 
 from intbitset import intbitset
 
@@ -57,9 +57,7 @@ class RemoteException(RuntimeError):
     @classmethod
     def from_exception(cls, exc: Exception):
         """Create message from exception"""
-        traceback = TracebackException.from_exception(exc)
-        message = "".join(traceback.format())
-        return cls(message)
+        return cls("".join(format_exception(exc)))
 
 
 @dataclass(slots=True, frozen=True)
