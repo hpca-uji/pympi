@@ -264,7 +264,7 @@ print(f"R{rank}: {result}")
   Environment variables checked for defaults:
   - `PYMPI_MSG_SIZE`
 
-  See `nq.SerializationOptions(...)` for more information.
+  See `nq.ConnectionOptions(...)` for more information.
 
 - `rc.queue_size: int = 1 * 1024 ** 3`
 
@@ -273,7 +273,7 @@ print(f"R{rank}: {result}")
   Environment variables checked for defaults:
   - `PYMPI_QUEUE_SIZE`
 
-  See `nq.SerializationOptions(...)` for more information.
+  See `nq.ConnectionOptions(...)` for more information.
 
 - `rc.comm: nq.Protocol = nq.Protocol.TCP`
 
@@ -314,6 +314,8 @@ print(f"R{rank}: {result}")
 - `rc.comm_opts: nq.CommunicatorOptions = nq.CommunicatorOptions()`
 
   Additional net-queue communicator options
+
+  See `nq.CommunicatorOptions(...)` for more information.
 
 ### Structures
 - `proto.CommunicationGroup(...)`
