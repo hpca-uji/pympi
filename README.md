@@ -354,7 +354,7 @@ print(f"R{rank}: {result}")
 
   Communicator
 
-  - `comm_opts: nq.CommunicatorOptions = nq.CommunicatorOptions()`
+  - `comm_opts: nq.CommunicatorOptions = rc.comm_opts`
 
   ---
 
@@ -374,7 +374,7 @@ print(f"R{rank}: {result}")
   MPI server
 
   - `thread_pool: concurrent.futures.ThreadPoolExecutor`
-  - `comm_opts: nq.CommunicatorOptions = nq.CommunicatorOptions()`
+  - `comm_opts: nq.CommunicatorOptions = rc.comm_opts`
 
 ## Notes
 Due to how Python and external libraries handle threading, there is no reliable way to track when the MPI context should be automatically finalized.
