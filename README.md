@@ -111,7 +111,7 @@ Additionally, `ANY_SOURCE`, self-messaging, message tagging and statuses are als
 For most cases `pympi` is a drop-in replacement for `mpi4py`,
 therefore only mayor differences will be documented.
 
-Documentation for `mpi4py` available here: <https://mpi4py.readthedocs.io/en/stable/>
+Documentation for `mpi4py` available here: <https://mpi4py.readthedocs.io/en/stable>
 
 ---
 
@@ -386,6 +386,8 @@ This implementation attempts to finalizes its context specifically when the main
 If this approach is not plausible, as it is Python implementation dependant, a classic atexit handler is also registered, but as mention before, this might lead to an undefined finalization behavior.
 
 To ensure defined graceful finalization the only reliable method is to manually call Finalize, and ensure it is always called, even when exceptions might be unhandled and lead to thread termination.
+
+_If you are looking for Patrick Miller's library by the same name, please visit: <https://pympi.sourceforge.net>_
 
 ## Acknowledgments
 The library has been partially supported by:
