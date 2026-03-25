@@ -12,6 +12,7 @@ import functools
 import threading
 from collections import defaultdict
 from concurrent.futures import Future
+from traceback import format_exception
 from argparse import ArgumentParser, Namespace
 from concurrent.futures import ThreadPoolExecutor
 
@@ -82,7 +83,7 @@ class Server:
     def __init__(self, thread_pool: ThreadPoolExecutor, comm_opts: nq.CommunicatorOptions = rc.comm_opts) -> None:
         """Server initialization"""
         super().__init__()
-        self._comm_opts = copy.replace(utils.comm_options(comm_opts), workers=rc.size)
+        self.comm_opts = copy.replace(utils.comm_options(comm_opts), workers=rc.size)
 
         # State
         self._shutdown = False
@@ -116,7 +117,8 @@ class Server:
             if comm := self.__dict__.get("_comm"):
                 pass
             else:
-                comm = self.__dict__["_comm"] = nq.new(protocol=rc.proto, purpose=nq.Purpose.SERVER, options=self._comm_opts)
+                comm = self.__dict__["_comm"] = nq.new(protocol=rc.proto, purpose=nq.Purpose.SERVER, options=self.comm_opts)
+            self.comm_opts = comm.options
         return comm
 
     def __enter__(self):
@@ -146,7 +148,7 @@ class Server:
             try:
                 message = self._comm.get()
             except Exception as exc:
-                warnings.warn(repr(exc), RuntimeWarning)
+                warnings.warn("".join(format_exception(exc)), RuntimeWarning)
                 continue
             request = message.data
 

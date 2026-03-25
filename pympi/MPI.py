@@ -22,6 +22,7 @@ import itertools
 from collections import abc
 from concurrent import futures
 from concurrent.futures import Future
+from traceback import format_exception
 
 import net_queue as nq
 from net_queue.utils import asynctools
@@ -168,7 +169,7 @@ class Comm:
 
     def __init__(self, comm_opts: nq.CommunicatorOptions = rc.comm_opts) -> None:
         """Communicator initialization"""
-        self._comm_opts = copy.replace(utils.comm_options(comm_opts))
+        self.comm_opts = copy.replace(utils.comm_options(comm_opts))
 
         self._comm_lock = threading.Lock()
 
@@ -193,7 +194,7 @@ class Comm:
             try:
                 response = self._comm.get().data
             except Exception as exc:
-                warnings.warn(repr(exc), RuntimeWarning)
+                warnings.warn("".join(format_exception(exc)), RuntimeWarning)
                 continue
 
             match response:
@@ -278,6 +279,7 @@ class Comm:
                 comm = self.__dict__["_comm"]
             else:
                 comm = self.__dict__["_comm"] = self._new_comm()
+            self.comm_opts = comm.options
         return comm
 
     def _new_comm(self) -> nq.Communicator:
@@ -295,7 +297,7 @@ class Comm:
 
         state = proto.RankInit(rank=self.rank)
         try:
-            comm = nq.new(protocol=rc.proto, purpose=nq.Purpose.CLIENT, options=self._comm_opts)
+            comm = nq.new(protocol=rc.proto, purpose=nq.Purpose.CLIENT, options=self.comm_opts)
             comm.put(state)
             while True:
                 response = comm.get().data
