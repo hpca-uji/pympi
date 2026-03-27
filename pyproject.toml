@@ -16,7 +16,7 @@ classifiers = [
     "Topic :: Utilities"
 ]
 keywords = ["MPI", "Parallel", "Python"]
-urls = { Homepage = "https://github.com/hpca-uji/pympi", Repository = "https://github.com/hpca-uji/pympi.git"}
+urls = { Homepage = "https://github.com/hpca-uji/pympi", Repository = "https://github.com/hpca-uji/pympi.git" }
 
 requires-python = ">=3.13"
 dependencies = [
