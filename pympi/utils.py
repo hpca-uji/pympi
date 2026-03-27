@@ -1,9 +1,25 @@
+"""Utility functions"""
+
 import copy
+from collections import abc
 
 import net_queue as nq
 from net_queue.core.comm import CommunicatorOptions
-from net_queue.utils.streamtools import PickleSerializer
+from net_queue.utils.stream import PickleSerializer
+
 from pympi import proto, rc
+
+
+__all__ = (
+    "byteview",
+    "comm_options"
+)
+
+
+def byteview(b: abc.Buffer) -> memoryview:
+    """Return a byte view of a buffer"""
+    with memoryview(b) as view:
+        return view.cast("B")
 
 
 def comm_options(base: CommunicatorOptions = CommunicatorOptions()):

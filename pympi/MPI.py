@@ -25,9 +25,7 @@ from concurrent.futures import Future
 from traceback import format_exception
 
 import net_queue as nq
-from net_queue.utils import asynctools
-from net_queue.utils.stream import byteview
-from net_queue.utils.asynctools import thread_queue
+from net_queue.utils.futures import queue, merge, set_running, set_result, set_exception, warn_exception
 
 from pympi import proto, rc, utils
 
@@ -100,9 +98,9 @@ class Request[T]:
 
         if exc is None:
             result = future.result()
-            asynctools.future_set_result(self.future, result)
+            set_result(self.future, result)
         else:
-            asynctools.future_set_exception(self.future, exc)
+            set_exception(self.future, exc)
 
     def wait(self, status=None) -> T:
         """Wait for a non-blocking operation to complete."""
@@ -180,8 +178,8 @@ class Comm:
         self._responses = dict[uuid.UUID, typing.Any]()
 
         thread_prefix = f"{__name__}.{self.__class__.__qualname__}:{id(self)}"
-        self._recv_queue = thread_queue(f"{thread_prefix}.recv")
-        self._resolve_queue = thread_queue(f"{thread_prefix}.resolve")
+        self._recv_queue = queue(f"{thread_prefix}.recv")
+        self._resolve_queue = queue(f"{thread_prefix}.resolve")
 
     @property
     def _closed(self):
@@ -249,11 +247,11 @@ class Comm:
         # Setup request
         request = Request()
         request._callback = callback
-        asynctools.future_set_running(request.future)
+        set_running(request.future)
 
         # Check if operation valid
         if self.rank not in op.group:
-            asynctools.future_set_exception(request.future, RuntimeError("Tried to schedule operation without participating"))
+            set_exception(request.future, RuntimeError("Tried to schedule operation without participating"))
             return request
 
         # Schedule operation
@@ -264,7 +262,7 @@ class Comm:
 
         if self.rank in op.group.dst:
             future.add_done_callback(lambda future: future.exception() and request._resolve(future))
-            self._recv_queue.submit(self._receive_response).add_done_callback(asynctools.future_warn_exception)
+            self._recv_queue.submit(self._receive_response).add_done_callback(warn_exception)
         else:
             future.add_done_callback(request._resolve)
 
@@ -429,7 +427,7 @@ class Comm:
         group = ctx.group(root=root, size=self.size)
 
         def callback(result: T) -> None:
-            with byteview(result) as src, byteview(buf) as dst:
+            with utils.byteview(result) as src, utils.byteview(buf) as dst:
                 dst[:] = src
 
         op = proto.OperationRequest(group=group, ctx=ctx, data=buf)
@@ -469,7 +467,7 @@ class Comm:
             sendbuf = recvbuf
 
         def callback(result: T) -> None:
-            with byteview(result) as src, byteview(recvbuf) as dst:
+            with utils.byteview(result) as src, utils.byteview(recvbuf) as dst:
                 dst[:] = src
 
         ctx = proto.AllReduceContext(op=op)
@@ -549,7 +547,7 @@ class Comm:
             sendbuf = recvbuf
 
         def callback(result: T) -> None:
-            with byteview(result) as src, byteview(recvbuf) as dst:
+            with utils.byteview(result) as src, utils.byteview(recvbuf) as dst:
                 dst[:] = src
 
         ctx = proto.ReduceContext(op=op)
@@ -605,7 +603,7 @@ class Comm:
         def callback(result: T):
             if buf is None:
                 return result
-            with byteview(result) as src, byteview(buf) as dst:
+            with utils.byteview(result) as src, utils.byteview(buf) as dst:
                 dst[:] = src
 
         ctx = proto.SendRecvContext(tag=tag)
@@ -629,7 +627,7 @@ class Comm:
             request._resolve(recv.future)
 
         request = Request[R]()
-        future = asynctools.merge_futures([send.future, recv.future])
+        future = merge(send.future, recv.future)
         future.add_done_callback(callback)
         return request
 
@@ -649,7 +647,7 @@ class Comm:
             request._resolve(recv.future)
 
         request = Request[R]()
-        future = asynctools.merge_futures([send.future, recv.future])
+        future = merge(send.future, recv.future)
         future.add_done_callback(callback)
         return request
 

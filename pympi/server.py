@@ -19,7 +19,7 @@ from concurrent.futures import ThreadPoolExecutor
 from bidict import bidict
 import net_queue as nq
 from net_queue.core import Message
-from net_queue.utils import asynctools
+from net_queue.utils import futures
 
 from pympi import proto, rc, utils
 
@@ -229,7 +229,7 @@ class Server:
         # Start operation compute
         if operation.compute is None and operation.src_ready:
             operation.compute = self._pool.submit(self._handle_operation, operation)
-            operation.compute.add_done_callback(asynctools.future_warn_exception)
+            operation.compute.add_done_callback(futures.warn_exception)
 
         # Operation queuing finished
         if operation.src_ready and operation.dst_ready:
@@ -284,9 +284,9 @@ def run_server():
 
 def start_server() -> Future:
     """Start a background server"""
-    from net_queue.utils.asynctools import thread_func
-    future = thread_func(run_server)
-    future.add_done_callback(asynctools.future_warn_exception)
+    from net_queue.utils.futures import background
+    future = background(run_server)
+    future.add_done_callback(futures.warn_exception)
     return future
 
 
