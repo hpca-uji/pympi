@@ -30,13 +30,6 @@ __all__ = (
 )
 
 
-# Argument pasrser
-arg_parser = ArgumentParser(
-    prog="mpi-server",
-    description="MPI server"
-)
-
-
 class Operation:
     """MPI Operation"""
 
@@ -295,5 +288,11 @@ def main(config: Namespace) -> None:
     run_server()
 
 
+def _start() -> int:
+    """System entrypoint"""
+    parser = ArgumentParser(prog="mpi-server", description="MPI server")
+    return main(parser.parse_args())  # type: ignore
+
+
 if __name__ == "__main__":
-    main(arg_parser.parse_args())
+    raise SystemExit(_start())

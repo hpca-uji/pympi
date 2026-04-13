@@ -12,14 +12,6 @@ __all__ = (
 )
 
 
-arg_parser = ArgumentParser(
-    prog="mpirun",
-    description="basic local mpirun"
-)
-
-arg_parser.add_argument("-np", dest="size", type=int)
-
-
 def main(config: Namespace, args: abc.Sequence[str]) -> None:
     """Application entrypoint"""
 
@@ -29,7 +21,14 @@ def main(config: Namespace, args: abc.Sequence[str]) -> None:
         subprocess.Popen(args=args, env=environ)
 
 
+def _start() -> int:
+    """System entrypoint"""
+    import sys, os  # noqa
+    parser = ArgumentParser(prog="mpirun", description="basic local mpirun")
+    parser.add_argument("-np", dest="size", type=int, default=os.process_cpu_count())
+    config, args = parser.parse_known_args(sys.argv[1:])
+    return main(config, args)  # type: ignore
+
+
 if __name__ == "__main__":
-    import sys
-    config, args = arg_parser.parse_known_args(*sys.argv[1:])
-    main(config, args)  # type: ignore
+    raise SystemExit(_start())

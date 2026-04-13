@@ -20,7 +20,7 @@ ranks = comm.allgather(rank)
 # Point-to-point
 match rank:
     case 0:
-        comm.send("Hello, 1!", dest=1)
+        comm.send("Hello!", dest=1)
     case 1:
         comm.recv(source=1)
 
@@ -37,10 +37,10 @@ comm.Allreduce(MPI.IN_PLACE, buffer)
 
 Execute with 2 processes:
 ```bash
-python -m pympi -np 2 python example.py
+pympi -np 2 python example.py
 ```
 
-Note: `mpirun`, `srun` and other job managers can also be used*
+Note: `mpirun`, `srun` and other MPI-aware job managers can also be used
 
 ## Benchmark
 
@@ -136,7 +136,7 @@ by default rank `0` launches the server on a separated thread.
 
 The server can also be started externally by:
 ```bash
-python -m pympi.server
+pympi-server
 ```
 
 ## Personalized operations

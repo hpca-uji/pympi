@@ -98,7 +98,8 @@ def main(config: Namespace) -> None:
     print_stats(sizes=sizes, time=end_time - start_time)
 
 
-if __name__ == "__main__":
+def _start() -> int:
+    """System entrypoint"""
     parser = ArgumentParser(prog="pympi-test-iops", description="PyMPU IOPS test")
     parser.add_argument("mode", choices=list(Mode), help="Synchronization mode")
     parser.add_argument("--min-size", type=int, default=8, help="Exponenet of minimun message size")
@@ -106,4 +107,8 @@ if __name__ == "__main__":
     parser.add_argument("--max-size", type=int, default=32, help="Exponenet of maxmimun message size")
     parser.add_argument("--step-expo", type=float, default=0.5, help="Exponenet of number of splits when stepping down a size")
     parser.add_argument("--reps", type=int, default=1, help="Number of repetitions of messages")
-    main(parser.parse_args())
+    return main(parser.parse_args())  # type: ignore
+
+
+if __name__ == "__main__":
+    raise SystemExit(_start())

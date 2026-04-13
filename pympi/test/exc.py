@@ -44,7 +44,12 @@ def main(config: Namespace) -> None:
     print(prefix, "finalize")
 
 
-if __name__ == "__main__":
+def _start() -> int:
+    """System entrypoint"""
     parser = ArgumentParser(prog="pympi-test-exc", description="PyMPI exception test")
     parser.add_argument("--rank-offset", type=int, default=45)
-    main(parser.parse_args())
+    return main(parser.parse_args())  # type: ignore
+
+
+if __name__ == "__main__":
+    raise SystemExit(_start())
