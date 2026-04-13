@@ -1,4 +1,4 @@
-# pympi
+# PyMPI
 Python-based MPI implementation for research and experimentation
 
 ## Example
