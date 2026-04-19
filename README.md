@@ -44,42 +44,42 @@ Note: `mpirun`, `srun` and other MPI-aware job managers can also be used
 
 ## Benchmark
 
-| Configuration | Used |
-|-|-|
-| SW | Python 3.13.5 |
-| OS | Debian GNU/Linux 13 (trixie) |
-| CPU | 13th Gen Intel® Core™ i5-13400 × 16 |
-| RAM | 64 GB |
+| Configuration | Used |  
+|-|-|  
+| SW | Python 3.13.5 |  
+| OS | Debian GNU/Linux 13 (trixie) |  
+| CPU | 13th Gen Intel® Core™ i5-13400 × 16 |  
+| RAM | 64 GB |  
 
-| Test | Transfer | Operations | Executed |
-|-|-|-|-|
-| Sync | 2.1GB | 500.0 | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py sync --step-size 0 --max-size 21 --reps 500 |
-| Async | 2.1GB | 500.0 | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py async --step-size 0 --max-size 21 --reps 500 |
-| Mix | 1.07GB | 2.05K | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py async --min-size 8 --step-size 2 --step-expo 0.5 --max-size 28 |
+| Test | Transfer | Operations | Executed |  
+|-|-|-|-|  
+| Sync | 2.1GB | 500.0 | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py sync --step-size 0 --max-size 21 --reps 500 |  
+| Async | 2.1GB | 500.0 | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py async --step-size 0 --max-size 21 --reps 500 |  
+| Mix | 1.07GB | 2.05K | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py async --min-size 8 --step-size 2 --step-expo 0.5 --max-size 28 |  
 
-| Time | TCP | MQTT | gRPC |
-|-|-|-|-|
-| Sync | 12.1 s | 33.1 s | 28.1 s |
-| Async | 8.6 s | 23.7 s | 18.2 s |
-| Mix | 7.2 s | 16.6 s | 12.4 s |
+| Time | TCP | MQTT | gRPC |  
+|-|-|-|-|  
+| Sync | 12.1 s | 33.1 s | 28.1 s |  
+| Async | 8.6 s | 23.7 s | 18.2 s |  
+| Mix | 7.2 s | 16.6 s | 12.4 s |  
 
-| Transfer | TCP | MQTT | gRPC |
-|-|-|-|-|
-| Sync | 1390.00 Mbps | 506.47 Mbps | 597.29 Mbps |
-| Async | 1940.00 Mbps | 706.75 Mbps | 923.79 Mbps |
-| Mix | 1200.00 Mbps | 517.83 Mbps | 691.85 Mbps |
+| Transfer | TCP | MQTT | gRPC |  
+|-|-|-|-|  
+| Sync | 1390.00 Mbps | 506.47 Mbps | 597.29 Mbps |  
+| Async | 1940.00 Mbps | 706.75 Mbps | 923.79 Mbps |  
+| Mix | 1200.00 Mbps | 517.83 Mbps | 691.85 Mbps |  
 
-| Operations | TCP | MQTT | gRPC |
-|-|-|-|-|
-| Sync | 41.46 IOPS | 15.09 IOPS | 17.8 IOPS |
-| Async | 57.91 IOPS | 21.06 IOPS | 27.53 IOPS |
-| Mix | 285.68 IOPS | 123.46 IOPS | 164.95 IOPS |
+| Operations | TCP | MQTT | gRPC |  
+|-|-|-|-|  
+| Sync | 41.46 IOPS | 15.09 IOPS | 17.8 IOPS |  
+| Async | 57.91 IOPS | 21.06 IOPS | 27.53 IOPS |  
+| Mix | 285.68 IOPS | 123.46 IOPS | 164.95 IOPS |  
 
-| Memory | TCP | MQTT | gRPC |
-|-|-|-|-|
-| Sync | 8.00 MB | 9.45 MB | 11.24 MB |
-| Async | 1045.10 MB | 948.68 MB | 1058.11 MB |
-| Mix | 560.32 MB | 507.15 MB | 577.45 MB |
+| Memory | TCP | MQTT | gRPC |  
+|-|-|-|-|  
+| Sync | 8.00 MB | 9.45 MB | 11.24 MB |  
+| Async | 1045.10 MB | 948.68 MB | 1058.11 MB |  
+| Mix | 560.32 MB | 507.15 MB | 577.45 MB |  
 
 ## Install
 ### Production
