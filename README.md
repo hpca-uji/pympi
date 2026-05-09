@@ -37,7 +37,7 @@ comm.Allreduce(MPI.IN_PLACE, buffer)
 
 Execute with 2 processes:
 ```bash
-pympi -np 2 python example.py
+pympi-run -np 2 python example.py
 ```
 
 Note: `mpirun`, `srun` and other MPI-aware job managers can also be used
@@ -59,21 +59,21 @@ Note: `mpirun`, `srun` and other MPI-aware job managers can also be used
 
 | Time | TCP | MQTT | gRPC |  
 |-|-|-|-|  
-| Sync | 12.1 s | 33.1 s | 28.1 s |  
-| Async | 8.6 s | 23.7 s | 18.2 s |  
-| Mix | 7.2 s | 16.6 s | 12.4 s |  
+| Sync | 6.2 s | 33.1 s | 28.1 s |  
+| Async | 6.3 s | 23.7 s | 18.2 s |  
+| Mix | 6.6 s | 16.6 s | 12.4 s |  
 
 | Transfer | TCP | MQTT | gRPC |  
 |-|-|-|-|  
-| Sync | 1390.00 Mbps | 506.47 Mbps | 597.29 Mbps |  
-| Async | 1940.00 Mbps | 706.75 Mbps | 923.79 Mbps |  
-| Mix | 1200.00 Mbps | 517.83 Mbps | 691.85 Mbps |  
+| Sync | 2700.00 Mbps | 506.47 Mbps | 597.29 Mbps |  
+| Async | 2610.00 Mbps | 706.75 Mbps | 923.79 Mbps |  
+| Mix | 1280.00 Mbps | 517.83 Mbps | 691.85 Mbps |  
 
 | Operations | TCP | MQTT | gRPC |  
 |-|-|-|-|  
-| Sync | 41.46 IOPS | 15.09 IOPS | 17.8 IOPS |  
-| Async | 57.91 IOPS | 21.06 IOPS | 27.53 IOPS |  
-| Mix | 285.68 IOPS | 123.46 IOPS | 164.95 IOPS |  
+| Sync | 80.54 IOPS | 15.09 IOPS | 17.8 IOPS |  
+| Async | 77.67 IOPS | 21.06 IOPS | 27.53 IOPS |  
+| Mix | 306.31 IOPS | 123.46 IOPS | 164.95 IOPS |  
 
 | Memory | TCP | MQTT | gRPC |  
 |-|-|-|-|  
