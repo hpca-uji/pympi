@@ -29,5 +29,5 @@ def comm_options(base: CommunicatorOptions = CommunicatorOptions()):
     serializer = PickleSerializer(allow=serializer_allow)
     serialization = nq.SerializationOptions(load=serializer.load, dump=serializer.dump)
     connection = copy.replace(base.connection, message_size=rc.msg_size, queue_size=rc.queue_size)
-    security = nq.SecurityOptions(key=rc.ssl_key, certificate=rc.ssl_cert) if rc.ssl else None
+    security = nq.SecurityOptions(key=rc.ssl_key, cert=rc.ssl_cert) if rc.ssl else None
     return copy.replace(base, netloc=netloc, connection=connection, serialization=serialization, security=security)
