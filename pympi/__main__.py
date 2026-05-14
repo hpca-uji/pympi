@@ -14,11 +14,19 @@ __all__ = (
 
 def main(config: Namespace, args: abc.Sequence[str]) -> None:
     """Application entrypoint"""
+    procs = []
 
     for rank in range(config.size):
         environ = os.environ.copy()
         environ.update({"PMI_RANK": str(rank), "PMI_SIZE": str(config.size)})
-        subprocess.Popen(args=args, env=environ)
+        proc = subprocess.Popen(args=args, env=environ)
+        procs.append(proc)
+
+    code = None
+    for proc in procs:
+        code = code or proc.wait()
+
+    return code
 
 
 def _start() -> int:

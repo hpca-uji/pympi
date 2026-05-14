@@ -65,10 +65,13 @@ def Finalize() -> None:
 
 class InPlace(enum.Enum):
     """In-place buffer argument."""
+
     IN_PLACE = enum.auto()
 
 
 class RequestState(enum.Enum):
+    """MPI Request state"""
+
     INI = enum.auto()
     ACK = enum.auto()
     RES = enum.auto()

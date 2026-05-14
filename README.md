@@ -1,9 +1,20 @@
 # PyMPI
-Python-based MPI implementation for research and experimentation
+Python-based MPI implementation for experimentation, extensibility and high-performance communications
+
+- Drop-in replacement for `mpi4py` comunicators
+- High-performance communications by `net-queue`
+- Fully thread-safe (`MPI_THREAD_MULTIPLE`)
+- Asynchronous operations for both objects and buffers
+- Supports multiple transport protocols with TLS
+- Restricted serializaction profiles for safer operations
+- Custom communication operations beyond traditional MPI reductions
+- Pipeline-oriented communication model independent of RTT
+- Familiar MPI semantics with Python-native flexibility
+- Works with `mpirun`, `srun` and existing MPI tooling
+- Designed for research, prototyping and experimental distributed systems
 
 ## Example
 ```python
-# example.py
 from pympi import MPI
 comm = MPI.COMM_WORLD
 size = comm.size
@@ -53,9 +64,9 @@ Note: `mpirun`, `srun` and other MPI-aware job managers can also be used
 
 | Test | Transfer | Operations | Executed |  
 |-|-|-|-|  
-| Sync | 2.1GB | 500.0 | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py sync --step-size 0 --max-size 21 --reps 500 |  
-| Async | 2.1GB | 500.0 | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py async --step-size 0 --max-size 21 --reps 500 |  
-| Mix | 1.07GB | 2.05K | PYMPI_PROTO=protocol mpirun -np 8 python test/iops.py async --min-size 8 --step-size 2 --step-expo 0.5 --max-size 28 |  
+| Sync | 2.1GB | 500.0 | PYMPI_PROTO=protocol mpirun -np 8 python pympi/test/iops.py sync --step-size 0 --max-size 21 --reps 500 |  
+| Async | 2.1GB | 500.0 | PYMPI_PROTO=protocol mpirun -np 8 python pympi/test/iops.py async --step-size 0 --max-size 21 --reps 500 |  
+| Mix | 1.07GB | 2.05K | PYMPI_PROTO=protocol mpirun -np 8 python pympi/test/iops.py async --min-size 8 --step-size 2 --step-expo 0.5 --max-size 28 |  
 
 | Time | TCP | MQTT | gRPC |  
 |-|-|-|-|  

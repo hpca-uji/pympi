@@ -1,7 +1,7 @@
 [project]
 name = "pympi"
-version = "1.4.6"
-description = "Simple Python-based MPI implementation"
+version = "1.4.7"
+description = "Python-based MPI implementation for experimentation, extensibility and high-performance communications"
 readme = "README.md"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
@@ -18,16 +18,16 @@ classifiers = [
 keywords = ["MPI", "Parallel", "Python"]
 urls = { Homepage = "https://github.com/hpca-uji/pympi", Repository = "https://github.com/hpca-uji/pympi.git" }
 
-requires-python = ">=3.13"
+requires-python = "~=3.13"
 dependencies = [
-    "bidict>=0.23.1",
-    "intbitset>=4.0.0",
-    "net-queue>=2.5.0"
+    "bidict~=0.23",
+    "intbitset~=4.1",
+    "net-queue~=2.5"
 ]
 
 [project.optional-dependencies]
 test = [
-    "numpy>=1.19.4"
+    "numpy~=2.4"
 ]
 
 [project.scripts]
@@ -36,7 +36,7 @@ pympi-server = "pympi.server:_start"
 
 [build-system]
 requires = [
-    "setuptools>=68.2.0"
+    "setuptools~=82.0"
 ]
 build-backend = "setuptools.build_meta"
 
