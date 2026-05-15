@@ -1,15 +1,16 @@
 # PyMPI
 Python-based MPI implementation for experimentation, extensibility and high-performance communications
 
-- Drop-in replacement for `mpi4py` comunicators
+- Drop-in replacement for `mpi4py` communicators
 - High-performance communications by `net-queue`
 - Fully thread-safe (`MPI_THREAD_MULTIPLE`)
 - Asynchronous operations for both objects and buffers
-- Supports multiple transport protocols with TLS
-- Restricted serializaction profiles for safer operations
 - Custom communication operations beyond traditional MPI reductions
-- Pipeline-oriented communication model independent of RTT
+- Supports multiple transport protocols with optional TLS
+- Restricted serialization profiles for safer operations
+- Pipeline-oriented design with minimal RTT sensitivity
 - Familiar MPI semantics with Python-native flexibility
+- Fully automatic progress engine by default
 - Works with `mpirun`, `srun` and existing MPI tooling
 - Designed for research, prototyping and experimental distributed systems
 
@@ -54,7 +55,6 @@ pympi-run -np 2 python example.py
 Note: `mpirun`, `srun` and other MPI-aware job managers can also be used
 
 ## Benchmark
-
 | Configuration | Used |  
 |-|-|  
 | SW | Python 3.13.5 |  
