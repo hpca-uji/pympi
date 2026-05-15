@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """MPI server-client API test"""
 
 from argparse import ArgumentParser, Namespace

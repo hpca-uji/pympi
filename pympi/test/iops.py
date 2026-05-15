@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """MPI server-client IOPS test"""
 
 import math
@@ -14,12 +15,14 @@ __all__ = ()
 
 class Peer(enum.StrEnum):
     """Peer type"""
+
     SERVER = enum.auto()
     CLIENT = enum.auto()
 
 
 class Mode(enum.StrEnum):
     """Test mode"""
+
     SYNC = enum.auto()
     ASYNC = enum.auto()
 
